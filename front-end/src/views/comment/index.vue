@@ -123,13 +123,21 @@
           </v-card-text>
         </v-card>
       </div>
+      <infinite-loading @infinite="infiniteHandler1">
+        <span slot="no-more">
+        </span>
+      </infinite-loading>
       <v-divider style="padding-top:20px"></v-divider>
     </v-container>
   </div>
 </template>
 <script>
+import InfiniteLoading from 'vue-infinite-loading'
 import { mapActions } from 'vuex'
 export default {
+  components: {
+    InfiniteLoading
+  },
   data: () => ({
     evaluation: '',
     salary: '',
@@ -150,12 +158,28 @@ export default {
     dataCompany: []
   }),
   created () {
-    this.getCommentForCompany()
+    // this.getCommentForCompany()
     this.loadingCompany()
   },
   methods: {
-    ...mapActions('comments', ['getComments', 'saveComments', 'saveReplyCompany']),
+    ...mapActions('comments', ['getComments', 'saveComments', 'saveReplyCompany', 'getCommentsLoadMore']),
     ...mapActions('home', ['getCompany']),
+    async infiniteHandler1 ($state) {
+      var pages = { companyCd: this.$route.params.id, page: Math.ceil(this.commentsList.length / 10) + 1 }
+      var resultComments = await this.getCommentsLoadMore(pages)
+      var result = resultComments.filter(element => element.companyCd === this.$route.params.id)
+      this.commentsList = this.commentsList.concat(result)
+      for (let i = 0; i < this.commentsList.length; i++) {
+        this.commentsList[i].createdAt = this.moment(this.commentsList[i].createdAt).format('L')
+        for (let j = 0; j < this.commentsList[i].embeddata.length; j++) {
+          this.commentsList[i].embeddata[j].createdAt = this.moment(this.commentsList[i].embeddata[j].createdAt).format('L')
+        }
+      }
+      $state.loaded()
+      if (resultComments.length === 0) {
+        $state.complete()
+      }
+    },
     async loadingCompany () {
       const resultCompany = await this.getCompany()
       var result = resultCompany.filter(element => element.companyCd === this.$route.params.id)
@@ -188,7 +212,7 @@ export default {
         this.salary = ''
         this.evaluation = ''
         this.showReview = false
-        this.getCommentForCompany()
+        this.infiniteHandler1()
       }
     },
     closeReviewCompany () {

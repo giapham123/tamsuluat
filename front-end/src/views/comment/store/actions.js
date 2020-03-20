@@ -1,7 +1,11 @@
 import { ApiClient } from '../../../http-common'
 const client = new ApiClient()
-export const getComments = async () => {
-  const resultCompany = await client.get('getComments/1')
+export const getComments = async (dispatch, param) => {
+  const resultCompany = await client.get('getComments/1', param)
+  return resultCompany.data
+}
+export const getCommentsLoadMore = async (dispatch, param) => {
+  const resultCompany = await client.get(`getComments/loadmore/${param.companyCd}&paging=${param.page}`, param)
   return resultCompany.data
 }
 export const saveComments = async (dispatch, param) => {

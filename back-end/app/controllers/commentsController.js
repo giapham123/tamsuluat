@@ -22,7 +22,33 @@ exports.getComments = async (req, res) => {
         }
     }, {
         $match: { companyCd: req.params.idCompany }
-    }, { $sort: { createdAt: -1 } }])
+    }, {
+         $sort: { createdAt: -1 } 
+    }, {
+        $skip : 0 * 10
+    }, { $limit: 10}
+])
+    if (result != null) {
+        res.send(result);
+    }
+}
+exports.getCommentsLoadMore = async (req, res) => {
+    console.log(req.params)
+    var result = await commentModel.aggregate([{
+        $lookup: {
+            from: "replycomments",
+            localField: "_id",
+            foreignField: "commentId",
+            as: "embeddata"
+        }
+    }, {
+        $match: { companyCd: req.params.idCompany }
+    }, {
+         $sort: { createdAt: -1 } 
+    }, {
+        $skip : (req.params.page - 1) * 10
+    }, { $limit: 10}
+])
     if (result != null) {
         res.send(result);
     }
