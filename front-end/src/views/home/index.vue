@@ -4,7 +4,7 @@
     <v-toolbar>
       <v-toolbar-title>Chọn Công Ty</v-toolbar-title>
       <v-autocomplete
-        v-model="select"
+        v-model="selectCompany"
         :loading="loading"
         :items="items"
         :search-input.sync="search"
@@ -16,22 +16,11 @@
         hide-details
         label="Công Ty bạn muốn rì viu?"
         solo
+        @change="searchCompany"
       ></v-autocomplete>
     </v-toolbar>
-    <v-toolbar class="d-flex" cols="12" sm="6">
-      <v-toolbar-title>Địa chỉ</v-toolbar-title>
-      <v-select
-        class="mx-4"
-        :items="itemsAddess"
-        label="Địa Chỉ"
-        solo
-        hide-details
-        item-value='addressCd'
-        item-text='addressNm'
-        style="padding-left:63px"
-      ></v-select>
-    </v-toolbar>
     <v-row>
+      <v-row>
       <v-card style="margin-top:10px" width="700px">
         <v-list>
           <template v-for="(item) in itemsCompanyList">
@@ -47,7 +36,7 @@
                     <v-col class="text-md-center col-1">
                       <v-icon small>location_on</v-icon>
                     </v-col>
-                    <v-col class="text-md-left col-1">
+                    <v-col class="text-md-left col-2">
                       <v-list-item-subtitle v-html="item.addressCd"></v-list-item-subtitle>
                     </v-col>
                     <v-col class="text-md-center col-1">
@@ -68,19 +57,16 @@
           </template>
         </v-list>
       </v-card>
+      </v-row>
       <v-card style="margin-top:10px; margin-left:5px" width="480">
         <v-list>
-          <v-subheader style="margin-top:17px">RỜ VIU MỚI NHẤT</v-subheader>
-          <template v-for="(item) in itemsCompanyList">
+          <b style="margin-top:17px">RỜ VIU MỚI NHẤT</b>
+          <template v-for="(item) in itemForCommentLatest">
             <v-divider :key="item.index"></v-divider>
             <v-list-item :key="item.index">
-              <v-list-item-avatar>
-                <v-img :src="item.avatar"></v-img>
-              </v-list-item-avatar>
-
               <v-list-item-content>
-                <v-list-item-title class="text-md-left" v-html="item.title"></v-list-item-title>
-                <v-list-item-subtitle class="text-md-left" v-html="item.subtitle"></v-list-item-subtitle>
+                <v-list-item-title class="text-md-left"><b>{{item.commentName}}</b> review <a @click="commentCompany(item)">{{item.companys[0].companyNm}}</a></v-list-item-title>
+                <v-list-item-subtitle class="text-md-left">{{item.createdAt}}</v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
           </template>
@@ -98,9 +84,10 @@ export default {
       loading: false,
       items: [],
       search: null,
-      select: null,
+      selectCompany: '',
       itemsCompany: [],
-      itemsAddess: []
+      itemCompanyListBeta: [],
+      itemForCommentLatest: []
     }
   },
   watch: {
@@ -112,22 +99,33 @@ export default {
     this.getCompanyAndAddress()
   },
   methods: {
-    ...mapActions('home', ['getCompany', 'getAddress']),
+    ...mapActions('home', ['getCompany', 'getAddress', 'getCommentsLatest']),
+    searchCompany () {
+      var resultSearchAddress = this.itemCompanyListBeta.filter(element => {
+        if (element.companyCd === this.selectCompany) {
+          return element
+        }
+      })
+      this.itemsCompanyList = resultSearchAddress
+    },
     commentCompany (item) {
       this.$router.push({ path: `/${item.companyCd}` })
     },
     async getCompanyAndAddress () {
-      const resultAddress = await this.getAddress()
-      this.itemsAddess = resultAddress
+      const getCommetsNew = await this.getCommentsLatest()
       const resultCompany = await this.getCompany()
+      for (let i = 0; i < getCommetsNew.length; i++) {
+        getCommetsNew[i].createdAt = this.moment(getCommetsNew[i].createdAt).format('L')
+      }
+      this.itemForCommentLatest = getCommetsNew
       this.itemsCompany = resultCompany
       this.itemsCompanyList = resultCompany
+      this.itemCompanyListBeta = resultCompany
     },
     querySelections (v) {
       this.loading = true
       setTimeout(() => {
         this.items = this.itemsCompany.filter(e => {
-          // return (e || '').toLowerCase().indexOf((v || '').toLowerCase()) > -1
           return e
         })
         this.loading = false

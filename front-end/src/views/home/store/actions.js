@@ -8,3 +8,7 @@ export const getAddress = async () => {
   const resultAddress = await client.get('getAddress')
   return resultAddress.data
 }
+export const getCommentsLatest = async () => {
+  const resultAddress = await client.get('getCommentsLatest')
+  return resultAddress.data
+}

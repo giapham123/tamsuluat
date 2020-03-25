@@ -1,65 +1,87 @@
 <template>
   <div>
-    <v-card>
-      <v-container>
-        <v-row>
-          <v-col cols="auto">
-            <v-img height="120" width="120" :src="imageCompany"></v-img>
-          </v-col>
-
-          <v-col>
-            <v-row class="flex-column ma-0 fill-height" justify="center">
-              <v-card-title>{{companyNm}}</v-card-title>
-              <v-row>
-                <v-card-subtitle>
-                  <v-icon>location_on</v-icon>
-                </v-card-subtitle>
-                <v-card-subtitle>{{addressCompany}}</v-card-subtitle>
-                <v-card-subtitle>
-                  <v-icon>person</v-icon>
-                </v-card-subtitle>
-                <v-card-subtitle>{{sizeCompany}}</v-card-subtitle>
+    <v-container>
+      <v-card>
+        <v-container>
+          <div class="text-md-left"><router-link to='/'>Trang chủ</router-link>/ Review công ty {{companyNm}}</div>
+          <v-row>
+            <v-col cols="auto">
+              <v-img height="100" width="100" :src="imageCompany"></v-img>
+            </v-col>
+            <v-col>
+              <v-row class="flex-column ma-0 fill-height" justify="center">
+                <v-card-title>{{companyNm}}</v-card-title>
+                <v-row style="margin-top:-30px">
+                  <v-card-subtitle>
+                    <v-icon>location_on</v-icon>
+                  </v-card-subtitle>
+                  <v-card-subtitle>{{addressCompany}}</v-card-subtitle>
+                  <v-card-subtitle>
+                    <v-icon>person</v-icon>
+                  </v-card-subtitle>
+                  <v-card-subtitle>{{sizeCompany}}</v-card-subtitle>
+                </v-row>
               </v-row>
-            </v-row>
-          </v-col>
-        </v-row>
-        <div class="my-2 text-md-left">
-          <v-btn depressed small color="primary" @click="reviewCompany">Review</v-btn>
-        </div>
-      </v-container>
-    </v-card>
+            </v-col>
+          </v-row>
+          <div class="my-2 text-md-left">
+            <v-btn depressed small color="primary" @click="reviewCompany">Review</v-btn>
+          </div>
+        </v-container>
+      </v-card>
+    </v-container>
     <v-divider></v-divider>
     <v-container>
-      <v-col class="d-flex" cols="12" sm="6">
-        <v-select :items="itemsDanhGia" label="Đánh giá công ty" v-show="showReview" v-model="evaluation" dense outlined></v-select>
-        <v-select
-          v-model="salary"
-          :items="itemsMucluong"
-          label="Mức lương"
-          v-show="showReview"
-          dense
-          outlined
-          style="padding-left:5px"
-        ></v-select>
-      </v-col>
-      <v-textarea
-        v-show="showReview"
-        v-model="contentForReview"
-        label="Review đi nek"
-        clearable
-        clear-icon="cancel"
-        auto-grow
-        rows="1"
-        row-height="15"
-      ></v-textarea>
-      <v-btn @click="closeReviewCompany" small v-show="showReview">Close</v-btn>
-      <v-btn @click="addReview" small v-show="showReview">Chém</v-btn>
-      <div v-for="(item,index) in commentsList" :key="index" style="padding-top:20px">
+      <v-card v-show="showReview">
+        <v-col sm="6">
+          <v-text-field v-show="showReview" label="Tên Nhân Viên" outlined dense v-model="staffNm"></v-text-field>
+          <v-text-field
+            v-show="showReview"
+            label="Thuộc bộ phận"
+            outlined
+            dense
+            v-model="department"
+          ></v-text-field>
+          <v-select
+            :items="itemsDanhGia"
+            label="Đánh giá công ty"
+            v-show="showReview"
+            v-model="evaluation"
+            dense
+            outlined
+          ></v-select>
+        </v-col>
+        <v-container>
+          <v-textarea
+            v-show="showReview"
+            v-model="contentForReview"
+            label="Review đi nek"
+            clearable
+            clear-icon="cancel"
+            auto-grow
+            rows="2"
+            row-height="15"
+          ></v-textarea>
+          <v-btn
+            @click="addReview"
+            small
+            v-show="showReview"
+            color="primary"
+            style="margin-right:5px"
+          >Đăng Comment</v-btn>
+          <v-btn @click="closeReviewCompany" small v-show="showReview">Hủy bỏ</v-btn>
+        </v-container>
+      </v-card>
+      <div v-for="(item,index) in commentsList" :key="index" style="padding-top:5px">
         <v-card>
           <v-card-text>
             <v-row no-gutters>
-              <v-card-subtitle class="text-md-left">Author: Anonymous mạo danh ({{item.evaluation}}) Lương: {{item.salary}}</v-card-subtitle>
-              <v-col cols="7">
+              <v-card-subtitle class="text-md-left">
+                <b
+                  style="color:blue; margin-left: -15px"
+                >{{item.commentName}} ({{item.department}}) {{item.evaluation}}</b>
+              </v-card-subtitle>
+              <v-col cols="6">
                 <v-row no-gutters>
                   <v-card-subtitle>Báo cáo ngày: {{item.createdAt}}</v-card-subtitle>
                   <!-- <v-card-subtitle>{{item.createdAt}}</v-card-subtitle> -->
@@ -94,12 +116,14 @@
                   v-if="showCommentForeachReply == index"
                 >Close</v-btn>
                 <v-btn
+                  style="margin-left:5px"
                   @click="addreply"
                   small
+                  color="primary"
                   class="text-md-left"
                   v-show="showcomment"
                   v-if="showCommentForeachReply == index"
-                >Chém</v-btn>
+                >Đăng Reply</v-btn>
               </v-row>
             </v-col>
             <div v-for="itemreply in item.embeddata" :key="itemreply._id" style="padding-left:20px">
@@ -124,8 +148,7 @@
         </v-card>
       </div>
       <infinite-loading @infinite="infiniteHandler1">
-        <span slot="no-more">
-        </span>
+        <span slot="no-more"></span>
       </infinite-loading>
       <v-divider style="padding-top:20px"></v-divider>
     </v-container>
@@ -155,24 +178,40 @@ export default {
     showCommentForeachReply: '',
     itemDetails: {},
     contentForReview: '',
-    dataCompany: []
+    dataCompany: [],
+    staffNm: '',
+    department: ''
   }),
   created () {
     // this.getCommentForCompany()
     this.loadingCompany()
   },
   methods: {
-    ...mapActions('comments', ['getComments', 'saveComments', 'saveReplyCompany', 'getCommentsLoadMore']),
+    ...mapActions('comments', [
+      'getComments',
+      'saveComments',
+      'saveReplyCompany',
+      'getCommentsLoadMore'
+    ]),
     ...mapActions('home', ['getCompany']),
     async infiniteHandler1 ($state) {
-      var pages = { companyCd: this.$route.params.id, page: Math.ceil(this.commentsList.length / 10) + 1 }
+      var pages = {
+        companyCd: this.$route.params.id,
+        page: Math.ceil(this.commentsList.length / 10) + 1
+      }
       var resultComments = await this.getCommentsLoadMore(pages)
-      var result = resultComments.filter(element => element.companyCd === this.$route.params.id)
+      var result = resultComments.filter(
+        element => element.companyCd === this.$route.params.id
+      )
       this.commentsList = this.commentsList.concat(result)
       for (let i = 0; i < this.commentsList.length; i++) {
-        this.commentsList[i].createdAt = this.moment(this.commentsList[i].createdAt).format('L')
+        this.commentsList[i].createdAt = this.moment(
+          this.commentsList[i].createdAt
+        ).format('L')
         for (let j = 0; j < this.commentsList[i].embeddata.length; j++) {
-          this.commentsList[i].embeddata[j].createdAt = this.moment(this.commentsList[i].embeddata[j].createdAt).format('L')
+          this.commentsList[i].embeddata[j].createdAt = this.moment(
+            this.commentsList[i].embeddata[j].createdAt
+          ).format('L')
         }
       }
       $state.loaded()
@@ -182,7 +221,9 @@ export default {
     },
     async loadingCompany () {
       const resultCompany = await this.getCompany()
-      var result = resultCompany.filter(element => element.companyCd === this.$route.params.id)
+      var result = resultCompany.filter(
+        element => element.companyCd === this.$route.params.id
+      )
       this.dataCompany = result
       this.companyNm = result[0].companyNm
       this.addressCompany = result[0].addressCd
@@ -193,18 +234,27 @@ export default {
       const resultComments = await this.getComments()
       this.commentsList = resultComments
       for (let i = 0; i < this.commentsList.length; i++) {
-        this.commentsList[i].createdAt = this.moment(this.commentsList[i].createdAt).format('L')
+        this.commentsList[i].createdAt = this.moment(
+          this.commentsList[i].createdAt
+        ).format('L')
         for (let j = 0; j < this.commentsList[i].embeddata.length; j++) {
-          this.commentsList[i].embeddata[j].createdAt = this.moment(this.commentsList[i].embeddata[j].createdAt).format('L')
+          this.commentsList[i].embeddata[j].createdAt = this.moment(
+            this.commentsList[i].embeddata[j].createdAt
+          ).format('L')
         }
       }
     },
     async addReview () {
+      if (this.staffNm === '') {
+        this.staffNm = 'Anonymous'
+      }
       const params = {
         contents: this.contentForReview,
         evaluation: this.evaluation,
         salary: this.salary,
-        companyCd: this.dataCompany[0].companyCd
+        companyCd: this.dataCompany[0].companyCd,
+        staffNm: this.staffNm,
+        department: this.department
       }
       const resultSave = await this.saveComments(params)
       if (resultSave === 'Save Success!') {
@@ -212,7 +262,9 @@ export default {
         this.salary = ''
         this.evaluation = ''
         this.showReview = false
-        this.infiniteHandler1()
+        this.staffNm = ''
+        this.department = ''
+        // this.infiniteHandler1($state)
       }
     },
     closeReviewCompany () {
