@@ -65,7 +65,7 @@ exports.getCommentsLatest = async (req, res) => {
         }
     }, {
         $sort: { createdAt: -1 }
-    }, { $limit: 5 }
+    }, { $limit: 10 }
     ])
     if (result != null) {
         res.send(result);

@@ -20,8 +20,8 @@
       ></v-autocomplete>
     </v-toolbar>
     <v-row>
-      <v-row>
-      <v-card style="margin-top:10px" width="700px">
+      <v-col>
+      <v-card width="auto">
         <v-list>
           <template v-for="(item) in itemsCompanyList">
             <v-divider :key="item.index"></v-divider>
@@ -57,10 +57,11 @@
           </template>
         </v-list>
       </v-card>
-      </v-row>
-      <v-card style="margin-top:10px; margin-left:5px" width="480">
+      </v-col>
+      <v-col sm=4 style="margin-left:-16px">
+      <v-card width="auto">
         <v-list>
-          <b style="margin-top:17px">RỜ VIU MỚI NHẤT</b>
+          <b>RỜ VIU MỚI NHẤT</b>
           <template v-for="(item) in itemForCommentLatest">
             <v-divider :key="item.index"></v-divider>
             <v-list-item :key="item.index">
@@ -72,6 +73,7 @@
           </template>
         </v-list>
       </v-card>
+      </v-col>
     </v-row>
   </v-container>
 </template>

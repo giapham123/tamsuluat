@@ -10,8 +10,8 @@
             </v-col>
             <v-col>
               <v-row class="flex-column ma-0 fill-height" justify="center">
-                <v-card-title>{{companyNm}}</v-card-title>
-                <v-row style="margin-top:-30px">
+                <v-card-title><b style="color:#00b7ff; font-size:30px">{{companyNm}}</b></v-card-title>
+                <v-row style="margin-top:-20px">
                   <v-card-subtitle>
                     <v-icon>location_on</v-icon>
                   </v-card-subtitle>
@@ -92,7 +92,7 @@
             <v-divider style="padding-top:20px"></v-divider>
             <div
               class="text--primary text-md-left"
-              style="text-align:left;white-space: pre-line"
+              style="text-align:left;white-space: pre-line; font-size:16px"
             >{{item.contents}}</div>
             <v-divider></v-divider>
             <v-col>
@@ -147,7 +147,7 @@
           </v-card-text>
         </v-card>
       </div>
-      <infinite-loading @infinite="infiniteHandler1">
+      <infinite-loading @infinite="infiniteHandler">
         <span slot="no-more"></span>
       </infinite-loading>
       <v-divider style="padding-top:20px"></v-divider>
@@ -194,7 +194,7 @@ export default {
       'getCommentsLoadMore'
     ]),
     ...mapActions('home', ['getCompany']),
-    async infiniteHandler1 ($state) {
+    async infiniteHandler ($state) {
       var pages = {
         companyCd: this.$route.params.id,
         page: Math.ceil(this.commentsList.length / 10) + 1
@@ -248,6 +248,12 @@ export default {
       if (this.staffNm === '') {
         this.staffNm = 'Anonymous'
       }
+      if (this.department === '') {
+        this.department = 'Boss'
+      }
+      if (this.contentForReview === '') {
+        return
+      }
       const params = {
         contents: this.contentForReview,
         evaluation: this.evaluation,
@@ -264,7 +270,6 @@ export default {
         this.showReview = false
         this.staffNm = ''
         this.department = ''
-        // this.infiniteHandler1($state)
       }
     },
     closeReviewCompany () {
