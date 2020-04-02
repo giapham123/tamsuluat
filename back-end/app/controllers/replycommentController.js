@@ -11,3 +11,12 @@ exports.saveReplyComment = async (req,res) => {
         res.send('Save Success!');
     }
 }
+
+exports.getReplyOfComment = async (req,res) => {
+    var objectCommentId = mongoose.Types.ObjectId(req.body._id);
+    var result = await replyCommentModel.find({commentId : objectCommentId});
+    if(result != null){
+        res.send(result);
+    }
+    
+}

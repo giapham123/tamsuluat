@@ -16,3 +16,7 @@ export const saveReplyCompany = async (dispatch, param) => {
   const saveReplyCompany = await client.post('saveReplyComments', param)
   return saveReplyCompany.data
 }
+export const getReplyOfComment = async (dispatch, param) => {
+  const resultReplyOfComment = await client.post('getReplyOfComment', param)
+  return resultReplyOfComment.data
+}

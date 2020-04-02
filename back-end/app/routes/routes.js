@@ -12,4 +12,5 @@ module.exports = (app) => {
     app.get('/getCommentsLatest', commentController.getCommentsLatest);
     //Reply Comments API
     app.post('/saveReplyComments', replyCommentController.saveReplyComment);
+    app.post('/getReplyOfComment', replyCommentController.getReplyOfComment);
 }

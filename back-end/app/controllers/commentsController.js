@@ -48,8 +48,8 @@ exports.getCommentsLoadMore = async (req, res) => {
     }, {
         $sort: { createdAt: -1 }
     }, {
-        $skip: (req.params.page - 1) * 10
-    }, { $limit: 10 }
+        $skip: (req.params.page - 1) * 5
+    }, { $limit: 5 }
     ])
     if (result != null) {
         res.send(result);

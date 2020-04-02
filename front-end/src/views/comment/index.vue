@@ -3,14 +3,19 @@
     <v-container>
       <v-card>
         <v-container>
-          <div class="text-md-left"><router-link to='/'>Trang chủ</router-link>/ Review công ty {{companyNm}}</div>
+          <div class="text-md-left">
+            <router-link to="/">Trang chủ</router-link>
+            / Review công ty {{companyNm}}
+          </div>
           <v-row>
             <v-col cols="auto">
               <v-img height="100" width="100" :src="imageCompany"></v-img>
             </v-col>
             <v-col>
               <v-row class="flex-column ma-0 fill-height" justify="center">
-                <v-card-title><b style="color:#00b7ff; font-size:30px">{{companyNm}}</b></v-card-title>
+                <v-card-title>
+                  <b style="color:#00b7ff; font-size:30px">{{companyNm}}</b>
+                </v-card-title>
                 <v-row style="margin-top:-20px">
                   <v-card-subtitle>
                     <v-icon>location_on</v-icon>
@@ -87,7 +92,6 @@
                   <!-- <v-card-subtitle>{{item.createdAt}}</v-card-subtitle> -->
                 </v-row>
               </v-col>
-              <v-btn depressed small color="primary" @click="replyForReview(item,index)">Reply</v-btn>
             </v-row>
             <v-divider style="padding-top:20px"></v-divider>
             <div
@@ -95,38 +99,41 @@
               style="text-align:left;white-space: pre-line; font-size:16px"
             >{{item.contents}}</div>
             <v-divider></v-divider>
-            <v-col>
-              <v-row>
-                <v-textarea
-                  v-model="commentforReply"
-                  v-show="showcomment"
-                  v-if="showCommentForeachReply == index"
-                  label="Chửi Nó"
-                  clearable
-                  clear-icon="cancel"
-                  auto-grow
-                  rows="1"
-                  row-height="15"
-                ></v-textarea>
-                <v-btn
-                  @click="closeReply"
-                  small
-                  class="text-md-left"
-                  v-show="showcomment"
-                  v-if="showCommentForeachReply == index"
-                >Close</v-btn>
-                <v-btn
-                  style="margin-left:5px"
-                  @click="addreply"
-                  small
-                  color="primary"
-                  class="text-md-left"
-                  v-show="showcomment"
-                  v-if="showCommentForeachReply == index"
-                >Đăng Reply</v-btn>
-              </v-row>
-            </v-col>
-            <div v-for="itemreply in item.embeddata" :key="itemreply._id" style="padding-left:20px">
+            <div class="text-md-left" style="margin-top: 5px">
+              <v-btn depressed small color="primary" @click="replyForReview(item,index)">Reply</v-btn>
+              <a style="margin-left: 5px" v-if="item.qty != 0" @click="ShowReply(item,index)">See reply {{item.qty}}</a>
+            </div>
+            <v-row>
+              <v-textarea
+                v-model="commentforReply"
+                v-show="showcomment"
+                v-if="showCommentForeachReply == index"
+                label="Chửi Nó"
+                clearable
+                clear-icon="cancel"
+                auto-grow
+                rows="1"
+                row-height="15"
+              ></v-textarea>
+              <v-btn
+                @click="closeReply"
+                small
+                class="text-md-left"
+                v-show="showcomment"
+                v-if="showCommentForeachReply == index"
+              >Close</v-btn>
+              <v-btn
+                style="margin-left:5px"
+                @click="addreply"
+                small
+                color="primary"
+                class="text-md-left"
+                v-show="showcomment"
+                v-if="showCommentForeachReply == index"
+              >Đăng Reply</v-btn>
+            </v-row>
+            <div  v-if="showReplyComment == index">
+            <div v-for="itemreply in dataForReply" :key="itemreply._id" style="padding-left:20px" >
               <v-card-text>
                 <div
                   class="text--primary text-md-left"
@@ -144,10 +151,11 @@
               </v-card-text>
               <v-divider></v-divider>
             </div>
+            </div>
           </v-card-text>
         </v-card>
       </div>
-      <infinite-loading @infinite="infiniteHandler">
+      <infinite-loading @infinite="infiniteHandler" ref="infiniteLoading">
         <span slot="no-more"></span>
       </infinite-loading>
       <v-divider style="padding-top:20px"></v-divider>
@@ -180,10 +188,12 @@ export default {
     contentForReview: '',
     dataCompany: [],
     staffNm: '',
-    department: ''
+    department: '',
+    showReplyComment: -1,
+    dataForReply: [],
+    itemsReply: {}
   }),
   created () {
-    // this.getCommentForCompany()
     this.loadingCompany()
   },
   methods: {
@@ -191,13 +201,25 @@ export default {
       'getComments',
       'saveComments',
       'saveReplyCompany',
-      'getCommentsLoadMore'
+      'getCommentsLoadMore',
+      'getReplyOfComment'
     ]),
     ...mapActions('home', ['getCompany']),
+    async ShowReply (item, index) {
+      this.itemsReply = { item: item, index: index }
+      this.showReplyComment = index
+      const result = await this.getReplyOfComment(item)
+      for (let i = 0; i < result.length; i++) {
+        result[i].createdAt = this.moment(
+          result[i].createdAt
+        ).format('L')
+      }
+      this.dataForReply = result
+    },
     async infiniteHandler ($state) {
       var pages = {
         companyCd: this.$route.params.id,
-        page: Math.ceil(this.commentsList.length / 10) + 1
+        page: Math.ceil(this.commentsList.length / 5) + 1
       }
       var resultComments = await this.getCommentsLoadMore(pages)
       var result = resultComments.filter(
@@ -208,11 +230,7 @@ export default {
         this.commentsList[i].createdAt = this.moment(
           this.commentsList[i].createdAt
         ).format('L')
-        for (let j = 0; j < this.commentsList[i].embeddata.length; j++) {
-          this.commentsList[i].embeddata[j].createdAt = this.moment(
-            this.commentsList[i].embeddata[j].createdAt
-          ).format('L')
-        }
+        this.commentsList[i].qty = this.commentsList[i].embeddata.length
       }
       $state.loaded()
       if (resultComments.length === 0) {
@@ -231,7 +249,11 @@ export default {
       this.imageCompany = 'http://localhost:3000/' + result[0].image
     },
     async getCommentForCompany () {
-      const resultComments = await this.getComments()
+      var pages = {
+        companyCd: this.$route.params.id,
+        page: 1
+      }
+      const resultComments = await this.getCommentsLoadMore(pages)
       this.commentsList = resultComments
       for (let i = 0; i < this.commentsList.length; i++) {
         this.commentsList[i].createdAt = this.moment(
@@ -270,6 +292,10 @@ export default {
         this.showReview = false
         this.staffNm = ''
         this.department = ''
+        this.commentsList = []
+        this.ShowReply({}, -1)
+        this.showcomment = false
+        this.$refs.infiniteLoading.$emit('$InfiniteLoading:reset')
       }
     },
     closeReviewCompany () {
@@ -282,25 +308,20 @@ export default {
       this.showCommentForeachReply = index
       this.showcomment = true
       this.itemDetails = item
+      this.itemsReply = { item: item, index: index }
     },
     closeReply (item, index) {
       this.showCommentForeachReply = index
       this.showcomment = false
     },
     async addreply () {
-      console.log(this.itemDetails._id)
       const paramReply = {
         contents: this.commentforReply,
         commentId: this.itemDetails._id
       }
       await this.saveReplyCompany(paramReply)
-      // this.showcomment = false
       this.commentforReply = ''
-      this.getCommentForCompany()
-      // if (this.commentforReply !== '') {
-      //   this.itemDetails.embeddata.push({ embeddata: this.commentforReply })
-      //   this.commentforReply = ''
-      // }
+      this.ShowReply(this.itemsReply.item, this.itemsReply.index)
     }
   }
 }
