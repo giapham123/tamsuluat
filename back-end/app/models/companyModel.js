@@ -4,7 +4,8 @@ const NoteSchema = mongoose.Schema({
     companyCd:String,
     companyNm:String,
     image:String,
-    sizePeople:String
+    sizePeople:String,
+    addressCd: String
 }, {
     timestamps: true
 });
