@@ -101,7 +101,7 @@ export default {
   },
   watch: {
     search (val) {
-      if (val === '' || val === null) {
+      if (val == '' || val == null) {
         this.getCompanyAndAddress()
       } else {
         val && val !== this.select && this.querySelections(val)
