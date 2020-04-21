@@ -101,56 +101,63 @@
             <v-divider></v-divider>
             <div class="text-md-left" style="margin-top: 5px">
               <v-btn depressed small color="primary" @click="replyForReview(item,index)">Reply</v-btn>
-              <a style="margin-left: 5px" v-if="item.qty != 0" @click="ShowReply(item,index)">See reply {{item.qty}}</a>
+              <a
+                style="margin-left: 5px"
+                v-if="item.qty != 0"
+                @click="ShowReply(item,index)"
+              >See reply {{item.qty}}</a>
             </div>
-            <v-row>
-              <v-textarea
-                v-model="commentforReply"
-                v-show="showcomment"
-                v-if="showCommentForeachReply == index"
-                label="Chửi Nó"
-                clearable
-                clear-icon="cancel"
-                auto-grow
-                rows="1"
-                row-height="15"
-              ></v-textarea>
-              <v-btn
-                @click="closeReply"
-                small
-                class="text-md-left"
-                v-show="showcomment"
-                v-if="showCommentForeachReply == index"
-              >Close</v-btn>
-              <v-btn
-                style="margin-left:5px"
-                @click="addreply"
-                small
-                color="primary"
-                class="text-md-left"
-                v-show="showcomment"
-                v-if="showCommentForeachReply == index"
-              >Đăng Reply</v-btn>
-            </v-row>
-            <div  v-if="showReplyComment == index">
-            <div v-for="itemreply in dataForReply" :key="itemreply._id" style="padding-left:20px" >
-              <v-card-text>
-                <div
-                  class="text--primary text-md-left"
-                  style="text-align:left;white-space: pre-line"
-                >{{itemreply.contents}}</div>
-                <v-row no-gutters>
-                  <div class="text-md-left">Anonymous mạo danh</div>
-                  <v-col cols="10">
-                    <v-row no-gutters>
-                      <div class="text-md-left" style="padding-left:20px">Báo cáo ngày:</div>
-                      <div class="text-md-left">{{itemreply.createdAt}}</div>
-                    </v-row>
-                  </v-col>
-                </v-row>
-              </v-card-text>
-              <v-divider></v-divider>
-            </div>
+            <v-flex xs12 sm10 d-flex style="margin-left: 20px">
+              <v-row>
+                <v-textarea
+                  v-model="commentforReply"
+                  v-show="showcomment"
+                  v-if="showCommentForeachReply == index"
+                  label="Reply Here"
+                  clearable
+                  clear-icon="cancel"
+                  auto-grow
+                  rows="1"
+                  row-height="15"
+                ></v-textarea>
+                <v-btn
+                  style="margin-left:5px; margin-top:20px"
+                  @click="addreply"
+                  small
+                  color="primary"
+                  class="text-md-left"
+                  v-show="showcomment"
+                  v-if="showCommentForeachReply == index"
+                >Đăng Reply</v-btn>
+                <v-btn
+                  style="margin-left:5px; margin-top:20px"
+                  @click="closeReply"
+                  small
+                  class="text-md-left"
+                  v-show="showcomment"
+                  v-if="showCommentForeachReply == index"
+                >Close</v-btn>
+              </v-row>
+            </v-flex>
+            <div v-if="showReplyComment == index">
+              <div v-for="itemreply in dataForReply" :key="itemreply._id" style="padding-left:20px">
+                <v-card-text>
+                  <div
+                    class="text--primary text-md-left"
+                    style="text-align:left;white-space: pre-line"
+                  >{{itemreply.contents}}</div>
+                  <v-row no-gutters>
+                    <div class="text-md-left">Anonymous mạo danh</div>
+                    <v-col cols="10">
+                      <v-row no-gutters>
+                        <div class="text-md-left" style="padding-left:20px">Báo cáo ngày:</div>
+                        <div class="text-md-left">{{itemreply.createdAt}}</div>
+                      </v-row>
+                    </v-col>
+                  </v-row>
+                </v-card-text>
+                <v-divider></v-divider>
+              </div>
             </div>
           </v-card-text>
         </v-card>
@@ -210,9 +217,7 @@ export default {
       this.showReplyComment = index
       const result = await this.getReplyOfComment(item)
       for (let i = 0; i < result.length; i++) {
-        result[i].createdAt = this.moment(
-          result[i].createdAt
-        ).format('L')
+        result[i].createdAt = this.moment(result[i].createdAt).format('L')
       }
       this.dataForReply = result
     },

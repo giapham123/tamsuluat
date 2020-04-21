@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <h1>Rì viu công ty thôi</h1>
+    <h1>Review công ty thôi</h1>
     <v-toolbar>
       <v-toolbar-title>Chọn Công Ty</v-toolbar-title>
       <v-autocomplete
@@ -9,70 +9,77 @@
         :items="items"
         :search-input.sync="search"
         cache-items
-        item-value='companyCd'
-        item-text='companyNm'
+        item-value="companyCd"
+        item-text="companyNm"
         class="mx-4"
         hide-no-data
         hide-details
-        label="Công Ty bạn muốn rì viu?"
+        label="Công Ty bạn muốn review?"
         solo
         @change="searchCompany"
       ></v-autocomplete>
     </v-toolbar>
     <v-row>
       <v-col>
-      <v-card width="auto">
-        <v-list>
-          <template v-for="(item) in itemsCompanyList">
-            <v-divider :key="item.index"></v-divider>
-            <v-list-item :key="item.index">
-              <v-list-item-avatar>
-                <v-img :src="`http://localhost:3000/`+item.image"></v-img>
-              </v-list-item-avatar>
-              <v-row no-gutters>
-                <v-list-item-content>
-                  <v-list-item-title class="text-md-left" v-html="item.companyNm"></v-list-item-title>
-                  <v-row no-gutters>
-                    <v-col class="text-md-center col-1">
-                      <v-icon small>location_on</v-icon>
-                    </v-col>
-                    <v-col class="text-md-left col-2">
-                      <v-list-item-subtitle v-html="item.addressCd"></v-list-item-subtitle>
-                    </v-col>
-                    <v-col class="text-md-center col-1">
-                      <v-icon small>person</v-icon>
-                    </v-col>
-                    <v-col class="text-md-left col-3">
-                      <v-list-item-subtitle v-html="item.sizePeople"></v-list-item-subtitle>
-                    </v-col>
-                  </v-row>
-                </v-list-item-content>
-              </v-row>
-              <div class="my-2">
-                <v-btn color="primary" fab small dark @click="commentCompany(item)">
-                  <v-icon>mdi-pencil</v-icon>
-                </v-btn>
-              </div>
-            </v-list-item>
-          </template>
-        </v-list>
-      </v-card>
+        <v-card width="auto">
+          <v-list>
+            <template v-for="(item) in itemsCompanyList">
+              <v-divider :key="item.index"></v-divider>
+              <v-list-item :key="item.index">
+                <v-list-item-avatar>
+                  <v-img :src="`http://localhost:3000/`+item.image"></v-img>
+                </v-list-item-avatar>
+                <v-row no-gutters>
+                  <v-list-item-content>
+                    <a>
+                      <v-list-item-title
+                        class="text-md-left hovertext"
+                        @click="commentCompany(item)"
+                        v-html="item.companyNm"
+                      ></v-list-item-title>
+                    </a>
+                    <v-row no-gutters>
+                      <v-col class="text-md-center col-1">
+                        <v-icon small>location_on</v-icon>
+                      </v-col>
+                      <v-col class="text-md-left col-2">
+                        <b><v-list-item-subtitle v-html="item.addressCd"></v-list-item-subtitle></b>
+                      </v-col>
+                      <v-col class="text-md-center col-1">
+                        <v-icon small>person</v-icon>
+                      </v-col>
+                      <v-col class="text-md-left col-3">
+                        <b><v-list-item-subtitle v-html="item.sizePeople"></v-list-item-subtitle></b>
+                      </v-col>
+                    </v-row>
+                  </v-list-item-content>
+                </v-row>
+                <v-avatar color="teal" size="48">
+                  <span class="white--text">{{item.count}}</span>
+                </v-avatar>
+              </v-list-item>
+            </template>
+          </v-list>
+        </v-card>
       </v-col>
-      <v-col sm=4 style="margin-left:-16px">
-      <v-card width="auto">
-        <v-list>
-          <b>RỜ VIU MỚI NHẤT</b>
-          <template v-for="(item) in itemForCommentLatest">
-            <v-divider :key="item.index"></v-divider>
-            <v-list-item :key="item.index">
-              <v-list-item-content>
-                <v-list-item-title class="text-md-left"><b>{{item.commentName}}</b> review <a @click="commentCompany(item)">{{item.companys[0].companyNm}}</a></v-list-item-title>
-                <v-list-item-subtitle class="text-md-left">{{item.createdAt}}</v-list-item-subtitle>
-              </v-list-item-content>
-            </v-list-item>
-          </template>
-        </v-list>
-      </v-card>
+      <v-col sm="4" style="margin-left:-16px">
+        <v-card width="auto">
+          <v-list>
+            <b>REVIEW MỚI NHẤT</b>
+            <template v-for="(item) in itemForCommentLatest">
+              <v-divider :key="item.index"></v-divider>
+              <v-list-item :key="item.index">
+                <v-list-item-content>
+                  <v-list-item-title class="text-md-left">
+                    <b>{{item.commentName}}</b> review
+                    <a @click="commentCompany(item)">{{item.companys[0].companyNm}}</a>
+                  </v-list-item-title>
+                  <v-list-item-subtitle class="text-md-left">{{item.createdAt}}</v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+            </template>
+          </v-list>
+        </v-card>
       </v-col>
     </v-row>
   </v-container>
@@ -94,7 +101,11 @@ export default {
   },
   watch: {
     search (val) {
-      val && val !== this.select && this.querySelections(val)
+      if (val === '' || val === null) {
+        this.getCompanyAndAddress()
+      } else {
+        val && val !== this.select && this.querySelections(val)
+      }
     }
   },
   created () {
@@ -117,7 +128,9 @@ export default {
       const getCommetsNew = await this.getCommentsLatest()
       const resultCompany = await this.getCompany()
       for (let i = 0; i < getCommetsNew.length; i++) {
-        getCommetsNew[i].createdAt = this.moment(getCommetsNew[i].createdAt).format('L')
+        getCommetsNew[i].createdAt = this.moment(
+          getCommetsNew[i].createdAt
+        ).format('L')
       }
       this.itemForCommentLatest = getCommetsNew
       this.itemsCompany = resultCompany
@@ -136,3 +149,9 @@ export default {
   }
 }
 </script>
+<style scoped>
+.hovertext:hover {
+  font-size: 20px;
+  font-weight: bold;
+}
+</style>
