@@ -93,7 +93,7 @@
                 </v-row>
               </v-col>
             </v-row>
-            <v-divider style="padding-top:20px"></v-divider>
+            <!-- <v-divider style="padding-top:20px"></v-divider> -->
             <div
               class="text--primary text-md-left"
               style="text-align:left;white-space: pre-line; font-size:16px"
@@ -139,6 +139,7 @@
                 >Close</v-btn>
               </v-row>
             </v-flex>
+            <v-divider style="margin-top:5px"></v-divider> 
             <div v-if="showReplyComment == index">
               <div v-for="itemreply in dataForReply" :key="itemreply._id" style="padding-left:20px">
                 <v-card-text>
@@ -251,7 +252,7 @@ export default {
       this.companyNm = result[0].companyNm
       this.addressCompany = result[0].addressCd
       this.sizeCompany = result[0].sizePeople
-      this.imageCompany = 'http://localhost:3000/' + result[0].image
+      this.imageCompany = 'http://184.164.64.117:3000/' + result[0].image
     },
     async getCommentForCompany () {
       var pages = {

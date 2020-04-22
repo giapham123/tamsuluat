@@ -27,7 +27,7 @@
               <v-divider :key="item.index"></v-divider>
               <v-list-item :key="item.index">
                 <v-list-item-avatar>
-                  <v-img :src="`http://localhost:3000/`+item.image"></v-img>
+                  <v-img :src="`http://184.164.64.117:3000/`+item.image"></v-img>
                 </v-list-item-avatar>
                 <v-row no-gutters>
                   <v-list-item-content>

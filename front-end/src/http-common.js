@@ -11,7 +11,7 @@ const getClient = (baseUrl = null) => {
 }
 
 class ApiClient {
-  constructor (baseUrl = 'http://localhost:3000/') {
+  constructor (baseUrl = 'http://184.164.64.117:3000/') {
     this.client = getClient(baseUrl)
   }
 
