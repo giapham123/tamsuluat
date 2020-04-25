@@ -89,7 +89,26 @@
               <v-col cols="6">
                 <v-row no-gutters>
                   <v-card-subtitle>Báo cáo ngày: {{item.createdAt}}</v-card-subtitle>
-                  <!-- <v-card-subtitle>{{item.createdAt}}</v-card-subtitle> -->
+                  <v-card-subtitle v-if="item.evaluation == 'Good'">
+                    <font-awesome-icon icon="star" size="lg" :style="{ color: 'yellow' }" />
+                    <font-awesome-icon icon="star" size="lg" :style="{ color: 'yellow' }" />
+                    <font-awesome-icon icon="star" size="lg" :style="{ color: 'yellow' }" />
+                    <font-awesome-icon icon="star" size="lg" :style="{ color: 'yellow' }" />
+                    <font-awesome-icon
+                      :icon="['far', 'star']"
+                      size="lg"
+                      :style="{ color: 'yellow' }"
+                    />
+                  </v-card-subtitle>
+                  <v-card-subtitle v-else>
+                    <font-awesome-icon icon="star" size="lg" :style="{ color: 'yellow' }" />
+                    <font-awesome-icon icon="star" size="lg" :style="{ color: 'yellow' }" />
+                    <font-awesome-icon
+                      :icon="['far', 'star']"
+                      size="lg"
+                      :style="{ color: 'yellow' }"
+                    />
+                  </v-card-subtitle>
                 </v-row>
               </v-col>
             </v-row>
