@@ -9,7 +9,6 @@ import '@mdi/font/css/materialdesignicons.css'
 import moment from 'moment'
 
 Vue.prototype.moment = moment
-
 Vue.use(Vuetify, {
   iconfont: 'md'
 })

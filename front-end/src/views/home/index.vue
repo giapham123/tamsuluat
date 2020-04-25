@@ -1,33 +1,37 @@
 <template>
   <v-container>
-    <h1>Review công ty thôi</h1>
-    <v-toolbar>
-      <v-toolbar-title>Chọn Công Ty</v-toolbar-title>
-      <v-autocomplete
-        v-model="selectCompany"
-        :loading="loading"
-        :items="items"
-        :search-input.sync="search"
-        cache-items
-        item-value="companyCd"
-        item-text="companyNm"
-        class="mx-4"
-        hide-no-data
-        hide-details
-        label="Công Ty bạn muốn review?"
-        solo
-        @change="searchCompany"
-      ></v-autocomplete>
-    </v-toolbar>
+    <div class="background">
+      <h1 class="font">Review công ty</h1>
+      <v-row  justify="center">
+      <v-col sm="8">
+      <v-toolbar>
+        <v-toolbar-title>Chọn Công Ty</v-toolbar-title>
+        <v-autocomplete
+          v-model="selectCompany"
+          :loading="loading"
+          :items="items"
+          :search-input.sync="search"
+          cache-items
+          item-value="companyCd"
+          item-text="companyNm"
+          class="mx-4"
+          hide-no-data
+          hide-details
+          label="Công Ty bạn muốn review?"
+          solo
+          @change="searchCompany"
+        ></v-autocomplete>
+      </v-toolbar></v-col></v-row>
+    </div>
     <v-row>
       <v-col>
         <v-card width="auto">
           <v-list>
             <template v-for="(item) in itemsCompanyList">
               <v-divider :key="item.index"></v-divider>
-              <v-list-item :key="item.index">
+              <v-list-item :key="item.index"   class="hoverCard">
                 <v-list-item-avatar>
-                  <v-img :src="`http://184.164.64.117:3000/`+item.image"></v-img>
+                  <v-img :src="item.image"></v-img>
                 </v-list-item-avatar>
                 <v-row no-gutters>
                   <v-list-item-content>
@@ -43,13 +47,17 @@
                         <v-icon small>location_on</v-icon>
                       </v-col>
                       <v-col class="text-md-left col-2">
-                        <b><v-list-item-subtitle v-html="item.addressCd"></v-list-item-subtitle></b>
+                        <b>
+                          <v-list-item-subtitle v-html="item.addressCd"></v-list-item-subtitle>
+                        </b>
                       </v-col>
                       <v-col class="text-md-center col-1">
                         <v-icon small>person</v-icon>
                       </v-col>
                       <v-col class="text-md-left col-3">
-                        <b><v-list-item-subtitle v-html="item.sizePeople"></v-list-item-subtitle></b>
+                        <b>
+                          <v-list-item-subtitle v-html="item.sizePeople"></v-list-item-subtitle>
+                        </b>
                       </v-col>
                     </v-row>
                   </v-list-item-content>
@@ -133,6 +141,10 @@ export default {
         ).format('L')
       }
       this.itemForCommentLatest = getCommetsNew
+      for (let i = 0; i < resultCompany.length; i++) {
+        resultCompany[i].image =
+          process.env.VUE_APP_SERVER + resultCompany[i].image
+      }
       this.itemsCompany = resultCompany
       this.itemsCompanyList = resultCompany
       this.itemCompanyListBeta = resultCompany
@@ -153,5 +165,17 @@ export default {
 .hovertext:hover {
   font-size: 20px;
   font-weight: bold;
+}
+.hoverCard:hover {
+  background-color: #DCDCDC;
+}
+.background{
+  background-image: url('../../assets/background.jpg');
+  background-size: 100%;
+  
+}
+.font {
+  color: white;
+  font-family: cursive;
 }
 </style>

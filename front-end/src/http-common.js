@@ -11,7 +11,7 @@ const getClient = (baseUrl = null) => {
 }
 
 class ApiClient {
-  constructor (baseUrl = 'http://184.164.64.117:3000/') {
+  constructor (baseUrl = process.env.VUE_APP_SERVER) {
     this.client = getClient(baseUrl)
   }
 
