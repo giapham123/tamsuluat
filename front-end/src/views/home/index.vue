@@ -172,7 +172,7 @@ export default {
 .background{
   background-image: url('../../assets/background.jpg');
   background-size: 100%;
-  
+
 }
 .font {
   color: white;

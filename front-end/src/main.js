@@ -8,11 +8,11 @@ import 'material-design-icons-iconfont/dist/material-design-icons.css'
 import '@mdi/font/css/materialdesignicons.css'
 import moment from 'moment'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faStar} from '@fortawesome/free-solid-svg-icons'
-import { faStar as farStar} from '@fortawesome/free-regular-svg-icons'
+import { faStar } from '@fortawesome/free-solid-svg-icons'
+import { faStar as farStar } from '@fortawesome/free-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-library.add(faStar,farStar )
+library.add(faStar, farStar)
 Vue.prototype.moment = moment
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.use(Vuetify, {

@@ -89,7 +89,71 @@
               <v-col cols="6">
                 <v-row no-gutters>
                   <v-card-subtitle>Báo cáo ngày: {{item.createdAt}}</v-card-subtitle>
-                  <v-card-subtitle v-if="item.evaluation == 'Good'">
+                  <v-card-subtitle v-if="item.evaluation == 'Max Sida'">
+                    <font-awesome-icon icon="star" size="lg" :style="{ color: 'yellow' }" />
+                    <font-awesome-icon
+                      :icon="['far', 'star']"
+                      size="lg"
+                      :style="{ color: 'yellow' }"
+                    />
+                    <font-awesome-icon
+                      :icon="['far', 'star']"
+                      size="lg"
+                      :style="{ color: 'yellow' }"
+                    />
+                    <font-awesome-icon
+                      :icon="['far', 'star']"
+                      size="lg"
+                      :style="{ color: 'yellow' }"
+                    />
+                    <font-awesome-icon
+                      :icon="['far', 'star']"
+                      size="lg"
+                      :style="{ color: 'yellow' }"
+                    />
+                  </v-card-subtitle>
+                  <v-card-subtitle
+                    v-else-if="item.evaluation == 'Hết thuốc chữa, Đang tính đường chuồn'"
+                  >
+                    <font-awesome-icon icon="star" size="lg" :style="{ color: 'yellow' }" />
+                    <font-awesome-icon icon="star" size="lg" :style="{ color: 'yellow' }" />
+                    <font-awesome-icon
+                      :icon="['far', 'star']"
+                      size="lg"
+                      :style="{ color: 'yellow' }"
+                    />
+                    <font-awesome-icon
+                      :icon="['far', 'star']"
+                      size="lg"
+                      :style="{ color: 'yellow' }"
+                    />
+                    <font-awesome-icon
+                      :icon="['far', 'star']"
+                      size="lg"
+                      :style="{ color: 'yellow' }"
+                    />
+                    <font-awesome-icon
+                      :icon="['far', 'star']"
+                      size="lg"
+                      :style="{ color: 'yellow' }"
+                    />
+                  </v-card-subtitle>
+                  <v-card-subtitle v-else-if="item.evaluation== 'Cũng tạm'">
+                    <font-awesome-icon icon="star" size="lg" :style="{ color: 'yellow' }" />
+                    <font-awesome-icon icon="star" size="lg" :style="{ color: 'yellow' }" />
+                    <font-awesome-icon icon="star" size="lg" :style="{ color: 'yellow' }" />
+                    <font-awesome-icon
+                      :icon="['far', 'star']"
+                      size="lg"
+                      :style="{ color: 'yellow' }"
+                    />
+                    <font-awesome-icon
+                      :icon="['far', 'star']"
+                      size="lg"
+                      :style="{ color: 'yellow' }"
+                    />
+                  </v-card-subtitle>
+                  <v-card-subtitle v-else-if="item.evaluation == 'Ngon'">
                     <font-awesome-icon icon="star" size="lg" :style="{ color: 'yellow' }" />
                     <font-awesome-icon icon="star" size="lg" :style="{ color: 'yellow' }" />
                     <font-awesome-icon icon="star" size="lg" :style="{ color: 'yellow' }" />
@@ -103,11 +167,9 @@
                   <v-card-subtitle v-else>
                     <font-awesome-icon icon="star" size="lg" :style="{ color: 'yellow' }" />
                     <font-awesome-icon icon="star" size="lg" :style="{ color: 'yellow' }" />
-                    <font-awesome-icon
-                      :icon="['far', 'star']"
-                      size="lg"
-                      :style="{ color: 'yellow' }"
-                    />
+                    <font-awesome-icon icon="star" size="lg" :style="{ color: 'yellow' }" />
+                    <font-awesome-icon icon="star" size="lg" :style="{ color: 'yellow' }" />
+                    <font-awesome-icon icon="star" size="lg" :style="{ color: 'yellow' }" />
                   </v-card-subtitle>
                 </v-row>
               </v-col>
@@ -203,7 +265,13 @@ export default {
     companyNm: "",
     addressCompany: "",
     sizeCompany: "",
-    itemsDanhGia: ["Good", "Qúa Chán"],
+    itemsDanhGia: [
+      "Max Sida",
+      "Hết thuốc chữa, Đang tính đường chuồn",
+      "Cũng tạm",
+      "Ngon",
+      "Công ty tuyệt vời"
+    ],
     itemsMucluong: ["Lương Cao", "Tạm Ổn", "Qúa Bèo"],
     showReview: false,
     items: ["Foo", "Bar", "Fizz", "Buzz"],
