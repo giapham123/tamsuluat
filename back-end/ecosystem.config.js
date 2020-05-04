@@ -1,18 +1,20 @@
 module.exports = {
     apps : [{
       name: 'API',
-      script: 'set NODE_ENV=development&&nodemon server.js',
+      script: 'server.js',
   
       // Options reference: https://pm2.keymetrics.io/docs/usage/application-declaration/
       args: 'one two',
       instances: 1,
       autorestart: true,
-      watch: false,
+      watch: true,
       max_memory_restart: '1G',
       env: {
+        port:3000,
         NODE_ENV: 'development'
       },
       env_production: {
+        port:3000,
         NODE_ENV: 'production'
       }
     }],
