@@ -4,7 +4,7 @@ const commentModel = require('../models/commentsModel');
 exports.getCompanyNm = async (req, res) => {
     var result = [];
     var resultCompany = [];
-    resultCompany = await company.find();
+    resultCompany = await company.find().skip((req.body.page - 1) * 10).limit(10)
     result = await commentModel.aggregate([
         { $group: { _id: "$companyCd", count: { $sum: 1 } } }
     ])
@@ -12,10 +12,17 @@ exports.getCompanyNm = async (req, res) => {
         for(let j = 0; j< result.length; j++){
             if(resultCompany[i].companyCd == result[j]._id){
                 resultCompany[i].count = result[j].count
+            }else{
+                resultCompany[i].count = 0
             }
         }
     }
     res.send(resultCompany);
+};
+exports.getCompanyNmForSelect = async (req, res) => {
+    var result = [];
+    result = await company.find()
+    res.send(result);
 };
 exports.getAddressNm = async (req, res) => {
     var result = [];
@@ -33,3 +40,7 @@ exports.insertCompany = async (req, res) => {
         var result = await dataInExcel.save()
     }
 }
+exports.uploadImages = async (req, res) => {
+    
+    res.send('done');
+};

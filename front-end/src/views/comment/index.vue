@@ -16,15 +16,15 @@
                 <v-card-title>
                   <b style="color:#00b7ff; font-size:30px">{{companyNm}}</b>
                 </v-card-title>
-                <v-row style="margin-top:-20px">
-                  <v-card-subtitle>
+                <v-row style="margin-top:-20px; margin-left:20px">
+                  <!-- <v-card-subtitle>
                     <v-icon>location_on</v-icon>
-                  </v-card-subtitle>
+                  </v-card-subtitle> -->
                   <v-card-subtitle>{{addressCompany}}</v-card-subtitle>
-                  <v-card-subtitle>
+                  <!-- <v-card-subtitle>
                     <v-icon>person</v-icon>
                   </v-card-subtitle>
-                  <v-card-subtitle>{{sizeCompany}}</v-card-subtitle>
+                  <v-card-subtitle>{{sizeCompany}}</v-card-subtitle> -->
                 </v-row>
               </v-row>
             </v-col>
@@ -132,11 +132,11 @@
                       size="lg"
                       :style="{ color: 'yellow' }"
                     />
-                    <font-awesome-icon
+                    <!-- <font-awesome-icon
                       :icon="['far', 'star']"
                       size="lg"
                       :style="{ color: 'yellow' }"
-                    />
+                    /> -->
                   </v-card-subtitle>
                   <v-card-subtitle v-else-if="item.evaluation== 'Cũng tạm'">
                     <font-awesome-icon icon="star" size="lg" :style="{ color: 'yellow' }" />
