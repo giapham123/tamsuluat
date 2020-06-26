@@ -299,7 +299,7 @@ export default {
       "getCommentsLoadMore",
       "getReplyOfComment"
     ]),
-    ...mapActions("home", ["getCompany"]),
+    ...mapActions("home", ["getCompanyForSearch"]),
     async ShowReply(item, index) {
       this.itemsReply = { item: item, index: index };
       this.showReplyComment = index;
@@ -331,15 +331,12 @@ export default {
       }
     },
     async loadingCompany() {
-      const resultCompany = await this.getCompany();
-      var result = resultCompany.filter(
-        element => element.companyCd === this.$route.params.id
-      );
-      this.dataCompany = result;
-      this.companyNm = result[0].companyNm;
-      this.addressCompany = result[0].addressCd;
-      this.sizeCompany = result[0].sizePeople;
-      this.imageCompany = process.env.VUE_APP_SERVER + result[0].image;
+      const resultCompany = await this.getCompanyForSearch({companyCd:this.$route.params.id});
+      this.dataCompany = resultCompany;
+      this.companyNm = resultCompany[0].companyNm;
+      this.addressCompany = resultCompany[0].addressCd;
+      this.sizeCompany = resultCompany[0].sizePeople;
+      this.imageCompany = process.env.VUE_APP_SERVER + resultCompany[0].image;
     },
     async getCommentForCompany() {
       var pages = {

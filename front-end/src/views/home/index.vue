@@ -62,7 +62,7 @@
                     </v-row>
                   </v-list-item-content>
                 </v-row>
-                <v-avatar color="teal" size="48">
+                <v-avatar color="teal" size="30">
                   <span class="white--text">{{item.count}}</span>
                 </v-avatar>
               </v-list-item>
@@ -127,7 +127,7 @@ export default {
     this.getCompanyAndAddress()
   },
   methods: {
-    ...mapActions('home', ['getCompany', 'getAddress', 'getCommentsLatest','getCompanyNmForSelect']),
+    ...mapActions('home', ['getCompany', 'getAddress', 'getCommentsLatest','getCompanyNmForSelect','getCompanyForSearch']),
     async infiniteHandler($state) {
       var pages = {
         page: Math.ceil(this.itemsCompanyList.length / 10) + 1
@@ -144,13 +144,13 @@ export default {
         $state.complete();
       }
     },
-    searchCompany () {
-      var resultSearchAddress = this.itemsCompanyList.filter(element => {
-        if (element.companyCd === this.selectCompany) {
-          return element
-        }
-      })
-      this.itemsCompanyList = resultSearchAddress  
+    async searchCompany () {
+      var resultCompany = await this.getCompanyForSearch({companyCd:this.selectCompany})
+      for (let i = 0; i < resultCompany.length; i++) {
+        resultCompany[i].image =
+          process.env.VUE_APP_SERVER + resultCompany[i].image
+      }
+      this.itemsCompanyList = resultCompany 
     },
     commentCompany (item) {
       this.$router.push({ path: `/${item.companyCd}` })
@@ -158,14 +158,17 @@ export default {
     async getCompanyAndAddress () {
       const getCommetsNew = await this.getCommentsLatest()
       const resultCompanyForselect = await this.getCompanyNmForSelect()
+      for(let i = 0; i<resultCompanyForselect.length; i++){
+        resultCompanyForselect[i].companyNm =  resultCompanyForselect[i].companyNm.concat(' - ' + resultCompanyForselect[i].addressCd)
+      }
       for (let i = 0; i < getCommetsNew.length; i++) {
         getCommetsNew[i].createdAt = this.moment(
           getCommetsNew[i].createdAt
         ).format('L')
       }
       this.itemForCommentLatest = getCommetsNew
-      // this.itemsCompany = resultCompanyForselect
       this.itemsCompanyListForSearch = resultCompanyForselect
+      this.items = resultCompanyForselect
       this.itemCompanyListBeta = this.itemsCompanyList
     },
     querySelections (v) {

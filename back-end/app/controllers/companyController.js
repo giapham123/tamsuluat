@@ -41,6 +41,23 @@ exports.insertCompany = async (req, res) => {
     }
 }
 exports.uploadImages = async (req, res) => {
-    
     res.send('done');
+};
+exports.searchComp = async (req, res) => {
+    var result = [];
+    var resultCompany = [];
+    resultCompany = await company.find({companyCd:req.body.companyCd})
+    result = await commentModel.aggregate([
+        { $group: { _id: "$companyCd", count: { $sum: 1 } } }
+    ])
+    for(let i = 0; i< resultCompany.length; i++){
+        for(let j = 0; j< result.length; j++){
+            if(resultCompany[i].companyCd == result[j]._id){
+                resultCompany[i].count = result[j].count
+            }else{
+                resultCompany[i].count = 0
+            }
+        }
+    }
+    res.send(resultCompany);
 };

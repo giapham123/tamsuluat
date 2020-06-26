@@ -16,3 +16,7 @@ export const getCommentsLatest = async () => {
   const resultAddress = await client.get('getCommentsLatest')
   return resultAddress.data
 }
+export const getCompanyForSearch = async (dispatch, param) => {
+  const resultCompany = await client.post('getCompanyForSearch', param)
+  return resultCompany.data
+}

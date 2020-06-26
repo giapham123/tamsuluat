@@ -23,7 +23,7 @@ module.exports = (app) => {
             callback(null, file.originalname)
         }
     });
-    var uploadImage = multer({storage:storageImage}).array('files',3)
+    var uploadImage = multer({storage:storageImage}).array('files',4000)
 
     var uploadmulter = upload.single('file');
     app.post('/uploadImage',uploadImage, companyController.uploadImages);
@@ -31,6 +31,7 @@ module.exports = (app) => {
     app.post('/getCompany', companyController.getCompanyNm);
     app.get('/getCompanyForSelect', companyController.getCompanyNmForSelect);
     app.get('/getAddress', companyController.getAddressNm);
+    app.post('/getCompanyForSearch',companyController.searchComp);
     //Comment API
     app.post('/saveComments', commentController.saveComment);
     app.get('/getComments/:idCompany', commentController.getComments);
