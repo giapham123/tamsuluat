@@ -70,7 +70,7 @@
           <div class="text-center">
             <v-pagination
               v-model="page"
-              :length="160"
+              :length="totalPaging"
               :total-visible="10"
               @input="nextPage"
             ></v-pagination>
@@ -108,6 +108,7 @@ export default {
   },
   data () {
     return {
+      totalPaging: 0,
       page: 1,
       itemsCompanyList: [],
       items: [],
@@ -120,7 +121,7 @@ export default {
   },
   watch: {
     search (val) {
-      if (val == '' || val == null) {
+      if (val == '' || val == null || val == 'undefined') {
         this.itemsCompanyList = this.itemsCompany
       } else {
         val && val !== this.select && this.querySelections(val)
@@ -134,12 +135,14 @@ export default {
   methods: {
     ...mapActions('home', ['getCompany', 'getAddress', 'getCommentsLatest','getCompanyNmForSelect','getCompanyForSearch']),
     async searchCompany () {
-      var resultCompany = await this.getCompanyForSearch({companyCd:this.selectCompany})
-      for (let i = 0; i < resultCompany.length; i++) {
-        resultCompany[i].image =
-          process.env.VUE_APP_SERVER + resultCompany[i].image
+      if(this.selectCompany != null){
+        var resultCompany = await this.getCompanyForSearch({companyCd:this.selectCompany})
+        for (let i = 0; i < resultCompany.length; i++) {
+          resultCompany[i].image =
+            process.env.VUE_APP_SERVER + resultCompany[i].image
+        }
+        this.itemsCompanyList = resultCompany 
       }
-      this.itemsCompanyList = resultCompany 
     },
     commentCompany (item) {
       this.$router.push({ path: `/${item.companyCd}` })
@@ -173,6 +176,7 @@ export default {
       this.itemForCommentLatest = getCommetsNew
       this.itemsCompanyListForSearch = resultCompanyForselect
       this.items = resultCompanyForselect
+      this.totalPaging = Math.ceil(resultCompanyForselect.length/10)
       this.itemCompanyListBeta = this.itemsCompanyList
     },
     querySelections (v) {
