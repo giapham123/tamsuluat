@@ -305,7 +305,7 @@ export default {
       this.showReplyComment = index;
       const result = await this.getReplyOfComment(item);
       for (let i = 0; i < result.length; i++) {
-        result[i].createdAt = this.moment(result[i].createdAt).format("L");
+        result[i].createdAt = this.moment(result[i].createdAt).format("MM/DD/YYYY")
       }
       this.dataForReply = result;
     },
@@ -322,7 +322,7 @@ export default {
       for (let i = 0; i < this.commentsList.length; i++) {
         this.commentsList[i].createdAt = this.moment(
           this.commentsList[i].createdAt
-        ).format("L");
+        ).format("MM/DD/YYYY");
         this.commentsList[i].qty = this.commentsList[i].embeddata.length;
       }
       $state.loaded();

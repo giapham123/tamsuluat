@@ -34,11 +34,10 @@
                   <v-img :src="item.image"></v-img>
                 </v-list-item-avatar>
                 <v-row no-gutters>
-                  <v-list-item-content>
+                  <v-list-item-content @click="commentCompany(item)">
                     <a>
                       <v-list-item-title
                         class="text-md-left hovertext"
-                        @click="commentCompany(item)"
                         v-html="item.companyNm"
                       ></v-list-item-title>
                     </a>
@@ -164,7 +163,7 @@ export default {
       for (let i = 0; i < getCommetsNew.length; i++) {
         getCommetsNew[i].createdAt = this.moment(
           getCommetsNew[i].createdAt
-        ).format('L')
+        ).fromNow()
       }
       this.itemForCommentLatest = getCommetsNew
       this.itemsCompanyListForSearch = resultCompanyForselect
