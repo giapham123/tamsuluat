@@ -247,7 +247,7 @@
       <infinite-loading @infinite="infiniteHandler" ref="infiniteLoading">
         <span slot="no-more"></span>
       </infinite-loading>
-      <v-divider style="padding-top:20px"></v-divider>
+      <!-- <v-divider style="padding-top:20px"></v-divider> -->
     </v-container>
   </div>
 </template>

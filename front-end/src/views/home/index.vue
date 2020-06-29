@@ -67,10 +67,15 @@
               </v-list-item>
             </template>
           </v-list>
+          <div class="text-center">
+            <v-pagination
+              v-model="page"
+              :length="160"
+              :total-visible="10"
+              @input="nextPage"
+            ></v-pagination>
+          </div>
         </v-card>
-        <infinite-loading @infinite="infiniteHandler" ref="infiniteLoading">
-          <span slot="no-more"></span>
-        </infinite-loading>
       </v-col>
       <v-col sm="3" style="margin-left:-16px">
         <v-card width="auto">
@@ -103,8 +108,8 @@ export default {
   },
   data () {
     return {
+      page: 1,
       itemsCompanyList: [],
-      loading: false,
       items: [],
       search: null,
       selectCompany: '',
@@ -124,25 +129,10 @@ export default {
   },
   created () {
     this.getCompanyAndAddress()
+    this.getListCompany(1);
   },
   methods: {
     ...mapActions('home', ['getCompany', 'getAddress', 'getCommentsLatest','getCompanyNmForSelect','getCompanyForSearch']),
-    async infiniteHandler($state) {
-      var pages = {
-        page: Math.ceil(this.itemsCompanyList.length / 10) + 1
-      };
-      var resultCompany = await this.getCompany(pages);
-      for (let i = 0; i < resultCompany.length; i++) {
-        resultCompany[i].image =
-          process.env.VUE_APP_SERVER + resultCompany[i].image
-      }
-      this.itemsCompanyList = this.itemsCompanyList.concat(resultCompany);
-      this.itemsCompany =  this.itemsCompanyList
-      $state.loaded();
-      if (resultCompany.length == 0) {
-        $state.complete();
-      }
-    },
     async searchCompany () {
       var resultCompany = await this.getCompanyForSearch({companyCd:this.selectCompany})
       for (let i = 0; i < resultCompany.length; i++) {
@@ -153,6 +143,21 @@ export default {
     },
     commentCompany (item) {
       this.$router.push({ path: `/${item.companyCd}` })
+    },
+    async nextPage(){
+      this.getListCompany(this.page)
+    },
+    async getListCompany(paging){
+      var pages = {
+        page: Math.ceil(this.page) + 1
+      };
+      var resultCompany = await this.getCompany(pages);
+      for (let i = 0; i < resultCompany.length; i++) {
+        resultCompany[i].image =
+          process.env.VUE_APP_SERVER + resultCompany[i].image
+      }
+      this.itemsCompanyList = resultCompany;
+      this.itemsCompany =   this.itemsCompanyList
     },
     async getCompanyAndAddress () {
       const getCommetsNew = await this.getCommentsLatest()
