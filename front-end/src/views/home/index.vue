@@ -193,7 +193,7 @@ export default {
 </script>
 <style scoped>
 .hovertext:hover {
-  font-size: 20px;
+  font-size: 17px;
   font-weight: bold;
 }
 .hoverCard:hover {
