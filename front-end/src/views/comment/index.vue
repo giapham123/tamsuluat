@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-container>
+    <v-container fluid>
       <v-card>
         <v-container>
           <div class="text-md-left">
