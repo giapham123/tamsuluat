@@ -1,18 +1,25 @@
 const addresses = require('../models/addressModel');
 const company = require('../models/companyModel');
 const commentModel = require('../models/commentsModel');
+const ES = require('../../configES')
+const syncData = require('../ES/syncDataFromMongoToES')
 exports.getCompanyNm = async (req, res) => {
     var result = [];
     var resultCompany = [];
     resultCompany = await company.find().skip((req.body.page - 1) * 10).limit(10)
-    result = await commentModel.aggregate([
-        { $group: { _id: "$companyCd", count: { $sum: 1 } } }
-    ])
-    for(let i = 0; i< resultCompany.length; i++){
-        for(let j = 0; j< result.length; j++){
-            if(resultCompany[i].companyCd == result[j]._id){
+    result = await commentModel.aggregate([{
+        $group: {
+            _id: "$companyCd",
+            count: {
+                $sum: 1
+            }
+        }
+    }])
+    for (let i = 0; i < resultCompany.length; i++) {
+        for (let j = 0; j < result.length; j++) {
+            if (resultCompany[i].companyCd == result[j]._id) {
                 resultCompany[i].count = result[j].count
-            }else{
+            } else {
                 resultCompany[i].count = 0
             }
         }
@@ -38,6 +45,7 @@ exports.insertCompany = async (req, res) => {
     for (let i = 0; i < xlData.length; i++) {
         var dataInExcel = new company(xlData[i])
         var result = await dataInExcel.save()
+        syncData.indexData();
     }
 }
 exports.uploadImages = async (req, res) => {
@@ -45,19 +53,43 @@ exports.uploadImages = async (req, res) => {
 };
 exports.searchComp = async (req, res) => {
     var result = [];
-    var resultCompany = [];
-    resultCompany = await company.find({companyCd:req.body.companyCd})
-    result = await commentModel.aggregate([
-        { $group: { _id: "$companyCd", count: { $sum: 1 } } }
-    ])
-    for(let i = 0; i< resultCompany.length; i++){
-        for(let j = 0; j< result.length; j++){
-            if(resultCompany[i].companyCd == result[j]._id){
-                resultCompany[i].count = result[j].count
-            }else{
-                resultCompany[i].count = 0
+    var hits = []
+    var a = await ES.client.search({
+        index: 'testindex',
+        q: req.body.companyCd
+    })
+    hits = a.hits.hits;
+    if(hits.length > 0){
+        result = await commentModel.aggregate([
+            { $group: { _id: "$companyCd", count: { $sum: 1 } } }
+        ])
+        for (let i = 0; i < hits.length; i++) {
+            for (let j = 0; j < result.length; j++) {
+                if (hits[i]._source.companyCd == result[j]._id) {
+                    hits[i]._source.count = result[j].count
+                } else {
+                    hits[i]._source.count = 0
+                }
             }
         }
     }
-    res.send(resultCompany);
+    
+    res.send(hits)
+    
+    // var result = [];
+    // var resultCompany = [];
+    // resultCompany = await company.find({companyCd:req.body.companyCd})
+    // result = await commentModel.aggregate([
+    //     { $group: { _id: "$companyCd", count: { $sum: 1 } } }
+    // ])
+    // for(let i = 0; i< resultCompany.length; i++){
+    //     for(let j = 0; j< result.length; j++){
+    //         if(resultCompany[i].companyCd == result[j]._id){
+    //             resultCompany[i].count = result[j].count
+    //         }else{
+    //             resultCompany[i].count = 0
+    //         }
+    //     }
+    // }
+    // res.send(resultCompany);
 };

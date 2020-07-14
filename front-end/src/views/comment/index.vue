@@ -17,14 +17,7 @@
                   <b style="color:#00b7ff; font-size:30px">{{companyNm}}</b>
                 </v-card-title>
                 <v-row style="margin-top:-20px; margin-left:20px">
-                  <!-- <v-card-subtitle>
-                    <v-icon>location_on</v-icon>
-                  </v-card-subtitle> -->
                   <v-card-subtitle>{{addressCompany}}</v-card-subtitle>
-                  <!-- <v-card-subtitle>
-                    <v-icon>person</v-icon>
-                  </v-card-subtitle>
-                  <v-card-subtitle>{{sizeCompany}}</v-card-subtitle> -->
                 </v-row>
               </v-row>
             </v-col>
@@ -132,11 +125,6 @@
                       size="lg"
                       :style="{ color: 'yellow' }"
                     />
-                    <!-- <font-awesome-icon
-                      :icon="['far', 'star']"
-                      size="lg"
-                      :style="{ color: 'yellow' }"
-                    /> -->
                   </v-card-subtitle>
                   <v-card-subtitle v-else-if="item.evaluation== 'Cũng tạm'">
                     <font-awesome-icon icon="star" size="lg" :style="{ color: 'yellow' }" />
@@ -174,7 +162,6 @@
                 </v-row>
               </v-col>
             </v-row>
-            <!-- <v-divider style="padding-top:20px"></v-divider> -->
             <div
               class="text--primary text-md-left"
               style="text-align:left;white-space: pre-line; font-size:16px"
@@ -244,21 +231,24 @@
           </v-card-text>
         </v-card>
       </div>
+      <nodata v-show="nodataShow"></nodata>
       <infinite-loading @infinite="infiniteHandler" ref="infiniteLoading">
         <span slot="no-more"></span>
       </infinite-loading>
-      <!-- <v-divider style="padding-top:20px"></v-divider> -->
     </v-container>
   </div>
 </template>
 <script>
 import InfiniteLoading from "vue-infinite-loading";
 import { mapActions } from "vuex";
+import nodata from "../commons/noData"
 export default {
   components: {
-    InfiniteLoading
+    InfiniteLoading,
+    nodata
   },
   data: () => ({
+    nodataShow: false,
     evaluation: "",
     salary: "",
     imageCompany: "",
@@ -310,6 +300,7 @@ export default {
       this.dataForReply = result;
     },
     async infiniteHandler($state) {
+      
       var pages = {
         companyCd: this.$route.params.id,
         page: Math.ceil(this.commentsList.length / 5) + 1
@@ -325,6 +316,11 @@ export default {
         ).format("MM/DD/YYYY");
         this.commentsList[i].qty = this.commentsList[i].embeddata.length;
       }
+      if(this.commentsList.length == 0){
+        this.nodataShow = true
+      }else{
+        this.nodataShow = false
+      }
       $state.loaded();
       if (resultComments.length === 0) {
         $state.complete();
@@ -332,11 +328,12 @@ export default {
     },
     async loadingCompany() {
       const resultCompany = await this.getCompanyForSearch({companyCd:this.$route.params.id});
+      console.log(resultCompany);
       this.dataCompany = resultCompany;
-      this.companyNm = resultCompany[0].companyNm;
-      this.addressCompany = resultCompany[0].addressCd;
-      this.sizeCompany = resultCompany[0].sizePeople;
-      this.imageCompany = process.env.VUE_APP_SERVER + resultCompany[0].image;
+      this.companyNm = resultCompany[0]._source.companyNm;
+      this.addressCompany = resultCompany[0]._source.addressCd;
+      this.sizeCompany = resultCompany[0]._source.sizePeople;
+      this.imageCompany = process.env.VUE_APP_SERVER + resultCompany[0]._source.image;
     },
     async getCommentForCompany() {
       var pages = {
@@ -370,7 +367,7 @@ export default {
         contents: this.contentForReview,
         evaluation: this.evaluation,
         salary: this.salary,
-        companyCd: this.dataCompany[0].companyCd,
+        companyCd: this.dataCompany[0]._source.companyCd,
         staffNm: this.staffNm,
         department: this.department
       };
