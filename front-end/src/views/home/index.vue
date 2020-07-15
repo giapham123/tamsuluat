@@ -198,7 +198,7 @@ export default {
   background-color: #DCDCDC;
 }
 .background{
-  /* background-image: url('../../assets/background.jpg'); */
+  background-image: url('../../assets/background.jpg');
   background-size: 100%;
 
 }
