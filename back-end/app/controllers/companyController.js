@@ -1,6 +1,11 @@
 const addresses = require('../models/addressModel');
 const company = require('../models/companyModel');
 const commentModel = require('../models/commentsModel');
+
+const fs = require('fs')
+
+const pathToFile = "./thumnail/dsCongty.xlsx"
+
 const ES = require('../../configES')
 const syncData = require('../ES/syncDataFromMongoToES')
 exports.getCompanyNm = async (req, res) => {
@@ -40,18 +45,37 @@ exports.getAddressNm = async (req, res) => {
     res.send(result);
 };
 exports.insertCompany = async (req, res) => {
+    var bulk = []
     var XLSX = require('xlsx')
-    var workbook = XLSX.readFile(req.file.path);
+    var workbook = XLSX.readFile(req.files[0].path);
     var sheet_name_list = workbook.SheetNames;
     var xlData = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_name_list[0]]);
-    res.send(xlData[2])
     for (let i = 0; i < xlData.length; i++) {
         var dataInExcel = new company(xlData[i])
         var result = await dataInExcel.save()
     }
+    xlData.forEach((doc) => {
+        bulk.push({
+          index: {
+            _index: 'companyss',
+          }
+        })
+  
+        let { _id, ...data } = doc;
+        bulk.push(data);
+      })
+    await ES.client.bulk({refresh: true, body: bulk })
+
+    try {
+        fs.unlinkSync(pathToFile)
+        console.log("Successfully deleted the file.")
+      } catch(err) {
+        throw err
+      }
+    res.send(xlData)
 }
 exports.uploadImages = async (req, res) => {
-    // syncData.indexData();
+    syncData.indexData();
     res.send('done');
 };
 exports.searchComp = async (req, res) => {
@@ -61,7 +85,7 @@ exports.searchComp = async (req, res) => {
         { $group: { _id: "$companyCd", count: { $sum: 1 } } }
     ])
     var a = await ES.client.search({
-        index: 'testindex',
+        index: 'companyss',
         q: req.body.companyCd
     })
     hits = a.hits.hits;
@@ -78,21 +102,4 @@ exports.searchComp = async (req, res) => {
         hits[i]._source.count = number
     }
     res.send(hits)
-    
-    // var result = [];
-    // var resultCompany = [];
-    // resultCompany = await company.find({companyCd:req.body.companyCd})
-    // result = await commentModel.aggregate([
-    //     { $group: { _id: "$companyCd", count: { $sum: 1 } } }
-    // ])
-    // for(let i = 0; i< resultCompany.length; i++){
-    //     for(let j = 0; j< result.length; j++){
-    //         if(resultCompany[i].companyCd == result[j]._id){
-    //             resultCompany[i].count = result[j].count
-    //         }else{
-    //             resultCompany[i].count = 0
-    //         }
-    //     }
-    // }
-    // res.send(resultCompany);
 };

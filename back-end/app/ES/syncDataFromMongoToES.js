@@ -7,11 +7,11 @@ var connectionString = 'mongodb://127.0.0.1:27017/'; // put username and passwor
 //Elasticsearch client config
 const { Client } = require('elasticsearch')
 const esClient = new Client({ node: 'http://localhost:9200' });
-var esIndexName = 'testindex'; // Elasticsearch index name will go here
+var esIndexName = 'companyss'; // Elasticsearch index name will go here
 
 let bulk = [];
 
-async function indexData() {
+exports.indexData = async () => {
 
   const client = await MongoClient.connect(connectionString, { useNewUrlParser: true })
     .catch(err => { console.log(err); });
@@ -75,5 +75,3 @@ async function indexData() {
     client.close();
   }
 }
-
-module.exports.indexData = indexData();
