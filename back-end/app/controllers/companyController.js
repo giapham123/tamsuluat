@@ -1,7 +1,7 @@
 const addresses = require('../models/addressModel');
 const company = require('../models/companyModel');
 const commentModel = require('../models/commentsModel');
-
+const imageToBase64 = require('image-to-base64');
 const fs = require('fs')
 
 const pathToFile = "./thumnail/dsCongty.xlsx"
@@ -22,6 +22,9 @@ exports.getCompanyNm = async (req, res) => {
     }])
     var number = 0
     for (let i = 0; i < resultCompany.length; i++) {
+    //    var base64Image =  await imageToBase64("http://localhost:3000/" + resultCompany[i].image )
+       var base64Image =  await imageToBase64("http://107.167.68.100:3000/" + resultCompany[i].image )
+        resultCompany[i].image = base64Image
         for (let j = 0; j < result.length; j++) {
             if (resultCompany[i].companyCd == result[j]._id) {
                 number = result[j].count

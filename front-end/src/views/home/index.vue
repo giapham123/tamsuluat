@@ -62,6 +62,7 @@
           </div>
         </v-card>
       </v-col>
+      
       <v-col sm="3" style="margin-left:-16px">
         <v-card width="auto">
           <v-list>
@@ -149,13 +150,13 @@ export default {
       this.getListCompany(this.page)
     },
     async getListCompany(paging){
+
       var pages = {
         page: Math.ceil(this.page) + 1
       };
       var resultCompany = await this.getCompany(pages);
       for (let i = 0; i < resultCompany.length; i++) {
-        resultCompany[i].image =
-          process.env.VUE_APP_SERVER + resultCompany[i].image
+        resultCompany[i].image = 'data:image/jpeg;base64,'+resultCompany[i].image 
       }
       this.itemsCompanyList = resultCompany;
       this.itemsCompany =   this.itemsCompanyList
