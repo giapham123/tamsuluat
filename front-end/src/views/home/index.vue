@@ -30,11 +30,8 @@
                 </v-list-item-avatar>
                 <v-row no-gutters>
                   <v-list-item-content @click="commentCompany(item)">
-                    <a>
-                      <v-list-item-title
-                        class="text-md-left hovertext"
-                        v-html="item.companyNm"
-                      ></v-list-item-title>
+                    <a class="text-md-left hovertext">
+                      {{item.companyNm}}
                     </a>
                     <v-row no-gutters>
                       <v-col class="text-md-left col-5">
