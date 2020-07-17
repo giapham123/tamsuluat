@@ -62,7 +62,9 @@
           </div>
         </v-card>
       </v-col>
-      
+       <v-overlay :value="overlay">
+      <v-progress-circular indeterminate size="64"></v-progress-circular>
+    </v-overlay>
       <v-col sm="3" style="margin-left:-16px">
         <v-card width="auto">
           <v-list>
@@ -96,6 +98,7 @@ export default {
   },
   data () {
     return {
+      overlay: true,
       nodataShowList:true,
       nodataShow: false,
       showPaging:true,
@@ -120,6 +123,14 @@ export default {
         this.showPaging = true
         this.itemsCompanyList = this.itemsCompany
       }
+    },
+    overlay (val) {
+      val && setTimeout(() => {
+        this.overlay = false
+      }, 3000)
+    },
+    page(){
+       this.overlay = true
     }
   },
   created () {
@@ -129,6 +140,7 @@ export default {
   methods: {
     ...mapActions('home', ['getCompany', 'getAddress', 'getCommentsLatest','getCompanyNmForSelect','getCompanyForSearch']),
     async searchCompany () {
+      this.overlay = true
       this.showPaging = false
       this.itemsCompanyList = []
       var resultCompany = await this.getCompanyForSearch({companyCd:this.inputValueSearch})
@@ -141,6 +153,7 @@ export default {
         resultCompany[i]._source.image = 'data:image/jpeg;base64,'+resultCompany[i]._source.image 
         this.itemsCompanyList.push(resultCompany[i]._source)
       }
+      if(resultCompany.length > 0) { this.overlay = false}
     },
     commentCompany (item) {
       this.$router.push({ path: `/${item.companyCd}` })
@@ -149,7 +162,6 @@ export default {
       this.getListCompany(this.page)
     },
     async getListCompany(paging){
-
       var pages = {
         page: Math.ceil(this.page) + 1
       };
@@ -159,6 +171,7 @@ export default {
       }
       this.itemsCompanyList = resultCompany;
       this.itemsCompany =   this.itemsCompanyList
+      this.itemsCompanyList.length > 0 ? this.overlay = false: this.overlay = true
     },
     async getCompanyAndAddress () {
       const getCommetsNew = await this.getCommentsLatest()
@@ -176,15 +189,6 @@ export default {
       this.items = resultCompanyForselect
       this.totalPaging = Math.ceil(resultCompanyForselect.length/10)
       this.itemCompanyListBeta = this.itemsCompanyList
-    },
-    querySelections (v) {
-      this.loading = true
-      setTimeout(() => {
-        this.items = this.itemsCompanyList.filter(e => {
-          return e
-        })
-        this.loading = false
-      }, 500)
     }
   }
 }

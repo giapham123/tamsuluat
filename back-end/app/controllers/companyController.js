@@ -78,16 +78,7 @@ exports.insertCompany = async (req, res) => {
     res.send(xlData)
 }
 exports.uploadImages = async (req, res) => {
-    console.log(req.files);
     // syncData.indexData();
-    for(let i =0; i< req.files.length; i++){
-        const options = {
-            images: [req.files[i].path],
-            width: 90,
-            quality: 90
-        };
-        await resizeOptimizeImages(options);
-    }
     res.send('done');
 };
 exports.searchComp = async (req, res) => {
