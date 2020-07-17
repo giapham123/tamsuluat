@@ -138,8 +138,7 @@ export default {
         return;
       }
       for (let i = 0; i < resultCompany.length; i++) {
-        resultCompany[i]._source.image =
-        process.env.VUE_APP_SERVER + resultCompany[i]._source.image
+        resultCompany[i]._source.image = 'data:image/jpeg;base64,'+resultCompany[i]._source.image 
         this.itemsCompanyList.push(resultCompany[i]._source)
       }
     },

@@ -3,7 +3,7 @@ const company = require('../models/companyModel');
 const commentModel = require('../models/commentsModel');
 const imageToBase64 = require('image-to-base64');
 const fs = require('fs')
-
+const resizeOptimizeImages = require('resize-optimize-images');
 const pathToFile = "./thumnail/dsCongty.xlsx"
 
 const ES = require('../../configES')
@@ -22,7 +22,7 @@ exports.getCompanyNm = async (req, res) => {
     }])
     var number = 0
     for (let i = 0; i < resultCompany.length; i++) {
-    //    var base64Image =  await imageToBase64("http://localhost:3000/" + resultCompany[i].image )
+        // var base64Image =  await imageToBase64("http://localhost:3000/" + resultCompany[i].image )
        var base64Image =  await imageToBase64("http://107.167.68.100:3000/" + resultCompany[i].image )
         resultCompany[i].image = base64Image
         for (let j = 0; j < result.length; j++) {
@@ -78,7 +78,16 @@ exports.insertCompany = async (req, res) => {
     res.send(xlData)
 }
 exports.uploadImages = async (req, res) => {
-    syncData.indexData();
+    console.log(req.files);
+    // syncData.indexData();
+    for(let i =0; i< req.files.length; i++){
+        const options = {
+            images: [req.files[i].path],
+            width: 90,
+            quality: 90
+        };
+        await resizeOptimizeImages(options);
+    }
     res.send('done');
 };
 exports.searchComp = async (req, res) => {
@@ -94,6 +103,9 @@ exports.searchComp = async (req, res) => {
     hits = a.hits.hits;
     var number = 0
     for (let i = 0; i < hits.length; i++) {
+        // var base64Image =  await imageToBase64("http://localhost:3000/" +  hits[i]._source.image )
+       var base64Image =  await imageToBase64("http://107.167.68.100:3000/" + hits[i]._source.image )
+       hits[i]._source.image = base64Image
         for (let j = 0; j < result.length; j++) {
             if (hits[i]._source.companyCd == result[j]._id) {
                 number = result[j].count
