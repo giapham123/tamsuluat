@@ -333,7 +333,7 @@ export default {
       this.companyNm = resultCompany[0]._source.companyNm;
       this.addressCompany = resultCompany[0]._source.addressCd;
       this.sizeCompany = resultCompany[0]._source.sizePeople;
-      this.imageCompany = 'data:image/jpeg;base64,'+resultCompany[i]._source.image;
+      this.imageCompany = 'data:image/jpeg;base64,'+resultCompany[0]._source.image;
     },
     async getCommentForCompany() {
       var pages = {
