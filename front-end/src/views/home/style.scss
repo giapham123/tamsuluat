@@ -1,0 +1,59 @@
+// Colors
+$color-white: rgb(255, 255, 255);
+$color-light-gray: #f2f2f2;
+$color-red: #07529c;
+$color-dark-gray: #1d1d1d;
+$color-dark-blue: #1a2949;
+$color-dark-gray-blue: #a9aaad;
+$color-grayish-cyan: #bac0c2;
+$color-blue: #0e65cf;
+$c-bac0c2: #bac0c2;
+$color-orange: #fb7331;
+$color-light-blue: #0f72ea;
+$color-main-blue: #0F72EA;
+$color-violet: #897ded;
+
+// Fonts
+$df-fs: 16;
+$rem: 1rem;
+$vw: 1vw;
+$mw-mobile: 575px;
+$mw-tablet: 1023px;
+
+$sm-view: 540px;
+$md-view: 720px;
+$lg-view: 960px;
+$xl-view: 1140px;
+
+@function toRem($size) {
+    $remSize: $size / $df-fs;
+    @return #{$remSize}rem;
+}
+@function toRem1($size) {
+    $remSize: $size / $df-fs;
+    @return #{$remSize}rem;
+}
+.search div.v-input__slot{
+    width: toRem(500) !important;
+    align-self: center !important;
+    position: absolute  !important;
+    bottom: 0  !important;
+};
+.hovertext:hover {
+    font-size: 17px;
+    font-weight: bold;
+};
+.hoverCard:hover {
+    background-color: #DCDCDC;
+};
+.background{
+    max-width: 100%;
+    background-size: cover;
+    transform: scale(1.3);
+    height: toRem1(150);
+};
+.font {
+    color: dimgrey;
+    font-family:serif;
+    font-size: 70px;
+};

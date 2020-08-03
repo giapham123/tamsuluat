@@ -5,7 +5,7 @@
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
     </div> -->
-    <router-view/>
+    <keep-alive><router-view/></keep-alive>
   </v-app>
 </template>
 
@@ -16,7 +16,7 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: left;
   color: #2c3e50;
-  background-color:gainsboro;
+  background-color:whitesmoke;
 }
 
 #nav {

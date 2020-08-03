@@ -1,50 +1,63 @@
 <template>
   <v-container>
-    <div class="background">
-      <h1 class="font" style="text-align: center">Review công ty</h1>
-      <v-row  justify="center">
-      <v-col sm="10">
-      <v-toolbar>
-        <v-toolbar-title>Chọn Công Ty</v-toolbar-title>
+    <div>
+      <v-img :src="require('../../assets/rview.jpg')" class="background" >
+      <!-- <v-col cols="6" sm="6" align="center" class="textSearch"> -->
         <v-text-field
-            style="margin-top:30px"
-            cache-items
-            class="mx-4"
-            label="Công Ty bạn muốn review?"
-            solo
-            v-model="inputValueSearch"
-            @keydown.enter= "searchCompany"
+          style="margin-top:30px"
+          class="mx-4 search"
+          label="Tìm công ty"
+          solo
+          prepend-inner-icon="find_in_page"
+          v-model="inputValueSearch"
+          @keydown.enter= "searchCompany"
           ></v-text-field>
-      </v-toolbar></v-col></v-row>
+      </v-img>
+      <v-row  justify="center">
+        <v-col sm="10">
+        </v-col>
+      </v-row>
     </div>
     <v-row>
-      <v-col>
-        <v-card width="100%">
+      <v-col cols="6" sm="9">
+        <v-card>
            <nodata v-show="nodataShow"></nodata>
           <v-list v-show="nodataShowList">
             <template v-for="(item) in itemsCompanyList">
               <v-divider :key="item.index"></v-divider>
               <v-list-item :key="item.index"   class="hoverCard">
-                <v-list-item-avatar>
+                <!-- <v-list-item-avatar>
                   <v-img :src="item.image"></v-img>
-                </v-list-item-avatar>
+                </v-list-item-avatar> -->
+                <v-col cols="6" sm="2">
+                  <v-img :src="item.image">
+                    <div class="fill-height bottom-gradient"></div>
+                  </v-img>
+                </v-col>
                 <v-row no-gutters>
                   <v-list-item-content @click="commentCompany(item)">
                     <a class="text-md-left hovertext">
                       {{item.companyNm}}
                     </a>
-                    <v-row no-gutters>
+                    <v-row>
                       <v-col class="text-md-left col-5">
-                        <b>
                           <v-list-item-subtitle v-html="item.addressCd"></v-list-item-subtitle>
-                        </b>
+                          <v-list-item-subtitle>Số lượng comments: {{item.count}}</v-list-item-subtitle>
+                           <v-row no-gutters>
+                              <v-col class="text-md-left col-6">
+                              <v-list-item-subtitle>Số lượng views: {{item.count}}</v-list-item-subtitle>
+                              </v-col>
+                               <v-col class="text-md-left col-6">
+                              <v-list-item-subtitle>Số lượng follow: {{item.count}}</v-list-item-subtitle>
+                               </v-col>
+                           </v-row>
                       </v-col>
                     </v-row>
                   </v-list-item-content>
                 </v-row>
-                <v-avatar color="teal" size="30">
+                <!-- <v-avatar color="teal" size="30">
                   <span class="white--text">{{item.count}}</span>
-                </v-avatar>
+                </v-avatar> -->
               </v-list-item>
             </template>
           </v-list>
@@ -88,6 +101,7 @@
 import { mapActions } from 'vuex'
 import InfiniteLoading from "vue-infinite-loading";
 import nodata from "../commons/noData"
+import './style.scss'
 export default {
   components: {
     InfiniteLoading,
@@ -191,21 +205,6 @@ export default {
 }
 </script>
 <style scoped>
-.hovertext:hover {
-  font-size: 17px;
-  font-weight: bold;
-}
-.hoverCard:hover {
-  background-color: #DCDCDC;
-}
-.background{
-  background-image: url('../../assets/background.jpg');
-  background-size: 100%;
 
-}
-.font {
-  color: dimgrey;
-  font-family:serif;
-  font-size: 70px;
-}
+
 </style>
