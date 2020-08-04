@@ -67,7 +67,7 @@
           <v-row no-gutters>
             <v-card-subtitle class="text-md-left">
               <b
-                style="color:blue; margin-left: -15px; font-size:19px"
+                style="color:blue; margin-left: -15px; font-size:15px"
               >{{item.commentName}} ({{item.department}}) {{item.evaluation}}</b>
             </v-card-subtitle>
             <v-col cols="6">
@@ -155,7 +155,7 @@
           </v-row>
           <div
             class="text--primary text-md-left"
-            style="text-align:left;white-space: pre-line; font-size:16px"
+            style="text-align:left;white-space: pre-line; font-size:14px"
           >{{item.contents}}</div>
           <v-divider></v-divider>
           <div class="text-md-left" style="margin-top: 5px">
