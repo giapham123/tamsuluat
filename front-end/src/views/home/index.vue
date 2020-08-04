@@ -98,8 +98,8 @@
 </template>
 <script>
 import { mapActions } from 'vuex'
-import InfiniteLoading from "vue-infinite-loading";
-import nodata from "../commons/noData"
+import InfiniteLoading from 'vue-infinite-loading'
+import nodata from '../commons/noData'
 import './style.scss'
 export default {
   components: {
@@ -109,14 +109,14 @@ export default {
   data () {
     return {
       overlay: true,
-      nodataShowList:true,
+      nodataShowList: true,
       nodataShow: false,
-      showPaging:true,
+      showPaging: true,
       inputValueSearch: '',
       totalPaging: 0,
       page: 1,
       itemsCompanyList: [],
-      itemComSearch:{},
+      itemComSearch: {},
       items: [],
       search: null,
       selectCompany: '',
@@ -139,55 +139,55 @@ export default {
         this.overlay = false
       }, 3000)
     },
-    page(){
-       this.overlay = true
+    page () {
+      this.overlay = true
     }
   },
   created () {
     this.getCompanyAndAddress()
-    this.getListCompany(1);
+    this.getListCompany(1)
   },
   methods: {
-    ...mapActions('home', ['getCompany', 'getAddress', 'getCommentsLatest','getCompanyNmForSelect','getCompanyForSearch']),
+    ...mapActions('home', ['getCompany', 'getAddress', 'getCommentsLatest', 'getCompanyNmForSelect', 'getCompanyForSearch']),
     async searchCompany () {
       this.overlay = true
       this.showPaging = false
       this.itemsCompanyList = []
-      var resultCompany = await this.getCompanyForSearch({companyCd:this.inputValueSearch})
-      if(resultCompany.length == 0){
+      var resultCompany = await this.getCompanyForSearch({ companyCd: this.inputValueSearch })
+      if (resultCompany.length == 0) {
         this.nodataShow = true
         this.nodataShowList = false
-        return;
+        return
       }
       for (let i = 0; i < resultCompany.length; i++) {
-        resultCompany[i]._source.image = 'data:image/jpeg;base64,'+resultCompany[i]._source.image 
+        resultCompany[i]._source.image = 'data:image/jpeg;base64,' + resultCompany[i]._source.image
         this.itemsCompanyList.push(resultCompany[i]._source)
       }
-      if(resultCompany.length > 0) { this.overlay = false}
+      if (resultCompany.length > 0) { this.overlay = false }
     },
     commentCompany (item) {
       this.$router.push({ path: `/${item.companyCd}` })
     },
-    async nextPage(){
+    async nextPage () {
       this.getListCompany(this.page)
     },
-    async getListCompany(paging){
+    async getListCompany (paging) {
       var pages = {
         page: Math.ceil(this.page) + 1
-      };
-      var resultCompany = await this.getCompany(pages);
-      for (let i = 0; i < resultCompany.length; i++) {
-        resultCompany[i].image = 'data:image/jpeg;base64,'+resultCompany[i].image 
       }
-      this.itemsCompanyList = resultCompany;
-      this.itemsCompany =   this.itemsCompanyList
-      this.itemsCompanyList.length > 0 ? this.overlay = false: this.overlay = true
+      var resultCompany = await this.getCompany(pages)
+      for (let i = 0; i < resultCompany.length; i++) {
+        resultCompany[i].image = 'data:image/jpeg;base64,' + resultCompany[i].image
+      }
+      this.itemsCompanyList = resultCompany
+      this.itemsCompany = this.itemsCompanyList
+      this.itemsCompanyList.length > 0 ? this.overlay = false : this.overlay = true
     },
     async getCompanyAndAddress () {
       const getCommetsNew = await this.getCommentsLatest()
       const resultCompanyForselect = await this.getCompanyNmForSelect()
-      for(let i = 0; i<resultCompanyForselect.length; i++){
-        resultCompanyForselect[i].companyNm =  resultCompanyForselect[i].companyNm.concat(' - ' + resultCompanyForselect[i].addressCd)
+      for (let i = 0; i < resultCompanyForselect.length; i++) {
+        resultCompanyForselect[i].companyNm = resultCompanyForselect[i].companyNm.concat(' - ' + resultCompanyForselect[i].addressCd)
       }
       for (let i = 0; i < getCommetsNew.length; i++) {
         getCommetsNew[i].createdAt = this.moment(
@@ -197,13 +197,12 @@ export default {
       this.itemForCommentLatest = getCommetsNew
       this.itemsCompanyListForSearch = resultCompanyForselect
       this.items = resultCompanyForselect
-      this.totalPaging = Math.ceil(resultCompanyForselect.length/10)
+      this.totalPaging = Math.ceil(resultCompanyForselect.length / 10)
       this.itemCompanyListBeta = this.itemsCompanyList
     }
   }
 }
 </script>
 <style scoped>
-
 
 </style>

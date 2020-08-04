@@ -239,9 +239,9 @@
   </div>
 </template>
 <script>
-import InfiniteLoading from "vue-infinite-loading";
-import { mapActions } from "vuex";
-import nodata from "../commons/noData"
+import InfiniteLoading from 'vue-infinite-loading'
+import { mapActions } from 'vuex'
+import nodata from '../commons/noData'
 export default {
   components: {
     InfiniteLoading,
@@ -249,119 +249,118 @@ export default {
   },
   data: () => ({
     nodataShow: false,
-    evaluation: "",
-    salary: "",
-    imageCompany: "",
-    companyNm: "",
-    addressCompany: "",
-    sizeCompany: "",
+    evaluation: '',
+    salary: '',
+    imageCompany: '',
+    companyNm: '',
+    addressCompany: '',
+    sizeCompany: '',
     itemsDanhGia: [
-      "Max Sida",
-      "Hết thuốc chữa, Đang tính đường chuồn",
-      "Cũng tạm",
-      "Ngon",
-      "Công ty tuyệt vời"
+      'Max Sida',
+      'Hết thuốc chữa, Đang tính đường chuồn',
+      'Cũng tạm',
+      'Ngon',
+      'Công ty tuyệt vời'
     ],
-    itemsMucluong: ["Lương Cao", "Tạm Ổn", "Qúa Bèo"],
+    itemsMucluong: ['Lương Cao', 'Tạm Ổn', 'Qúa Bèo'],
     showReview: false,
-    items: ["Foo", "Bar", "Fizz", "Buzz"],
-    commentforReply: "",
+    items: ['Foo', 'Bar', 'Fizz', 'Buzz'],
+    commentforReply: '',
     showcomment: false,
     commentsList: [],
-    showCommentForeachReply: "",
+    showCommentForeachReply: '',
     itemDetails: {},
-    contentForReview: "",
+    contentForReview: '',
     dataCompany: [],
-    staffNm: "",
-    department: "",
+    staffNm: '',
+    department: '',
     showReplyComment: -1,
     dataForReply: [],
     itemsReply: {}
   }),
-  created() {
-    this.loadingCompany();
+  created () {
+    this.loadingCompany()
   },
   methods: {
-    ...mapActions("comments", [
-      "getComments",
-      "saveComments",
-      "saveReplyCompany",
-      "getCommentsLoadMore",
-      "getReplyOfComment"
+    ...mapActions('comments', [
+      'getComments',
+      'saveComments',
+      'saveReplyCompany',
+      'getCommentsLoadMore',
+      'getReplyOfComment'
     ]),
-    ...mapActions("home", ["getCompanyForSearch"]),
-    async ShowReply(item, index) {
-      this.itemsReply = { item: item, index: index };
-      this.showReplyComment = index;
-      const result = await this.getReplyOfComment(item);
+    ...mapActions('home', ['getCompanyForSearch']),
+    async ShowReply (item, index) {
+      this.itemsReply = { item: item, index: index }
+      this.showReplyComment = index
+      const result = await this.getReplyOfComment(item)
       for (let i = 0; i < result.length; i++) {
-        result[i].createdAt = this.moment(result[i].createdAt).format("MM/DD/YYYY")
+        result[i].createdAt = this.moment(result[i].createdAt).format('MM/DD/YYYY')
       }
-      this.dataForReply = result;
+      this.dataForReply = result
     },
-    async infiniteHandler($state) {
-      
+    async infiniteHandler ($state) {
       var pages = {
         companyCd: this.$route.params.id,
         page: Math.ceil(this.commentsList.length / 5) + 1
-      };
-      var resultComments = await this.getCommentsLoadMore(pages);
+      }
+      var resultComments = await this.getCommentsLoadMore(pages)
       var result = resultComments.filter(
         element => element.companyCd === this.$route.params.id
-      );
-      this.commentsList = this.commentsList.concat(result);
+      )
+      this.commentsList = this.commentsList.concat(result)
       for (let i = 0; i < this.commentsList.length; i++) {
         this.commentsList[i].createdAt = this.moment(
           this.commentsList[i].createdAt
-        ).format("MM/DD/YYYY");
-        this.commentsList[i].qty = this.commentsList[i].embeddata.length;
+        ).format('MM/DD/YYYY')
+        this.commentsList[i].qty = this.commentsList[i].embeddata.length
       }
-      if(this.commentsList.length == 0){
+      if (this.commentsList.length == 0) {
         this.nodataShow = true
-      }else{
+      } else {
         this.nodataShow = false
       }
-      $state.loaded();
+      $state.loaded()
       if (resultComments.length === 0) {
-        $state.complete();
+        $state.complete()
       }
     },
-    async loadingCompany() {
-      const resultCompany = await this.getCompanyForSearch({companyCd:this.$route.params.id});
-      console.log(resultCompany);
-      this.dataCompany = resultCompany;
-      this.companyNm = resultCompany[0]._source.companyNm;
-      this.addressCompany = resultCompany[0]._source.addressCd;
-      this.sizeCompany = resultCompany[0]._source.sizePeople;
-      this.imageCompany = 'data:image/jpeg;base64,'+resultCompany[0]._source.image;
+    async loadingCompany () {
+      const resultCompany = await this.getCompanyForSearch({ companyCd: this.$route.params.id })
+      console.log(resultCompany)
+      this.dataCompany = resultCompany
+      this.companyNm = resultCompany[0]._source.companyNm
+      this.addressCompany = resultCompany[0]._source.addressCd
+      this.sizeCompany = resultCompany[0]._source.sizePeople
+      this.imageCompany = 'data:image/jpeg;base64,' + resultCompany[0]._source.image
     },
-    async getCommentForCompany() {
+    async getCommentForCompany () {
       var pages = {
         companyCd: this.$route.params.id,
         page: 1
-      };
-      const resultComments = await this.getCommentsLoadMore(pages);
-      this.commentsList = resultComments;
+      }
+      const resultComments = await this.getCommentsLoadMore(pages)
+      this.commentsList = resultComments
       for (let i = 0; i < this.commentsList.length; i++) {
         this.commentsList[i].createdAt = this.moment(
           this.commentsList[i].createdAt
-        ).format("L");
+        ).format('L')
         for (let j = 0; j < this.commentsList[i].embeddata.length; j++) {
           this.commentsList[i].embeddata[j].createdAt = this.moment(
             this.commentsList[i].embeddata[j].createdAt
-          ).format("L");
+          ).format('L')
         }
       }
     },
-    async addReview() {
-      if (this.staffNm === "") {
-        this.staffNm = "Anonymous";
+    async addReview () {
+      if (this.staffNm === '') {
+        this.staffNm = 'Anonymous'
       }
-      if (this.department === "") {
-        this.department = "Boss";
+      if (this.department === '') {
+        this.department = 'Boss'
       }
-      if (this.contentForReview === "") {
-        return;
+      if (this.contentForReview === '') {
+        return
       }
       const params = {
         contents: this.contentForReview,
@@ -370,46 +369,46 @@ export default {
         companyCd: this.dataCompany[0]._source.companyCd,
         staffNm: this.staffNm,
         department: this.department
-      };
-      const resultSave = await this.saveComments(params);
-      if (resultSave === "Save Success!") {
-        this.contentForReview = "";
-        this.salary = "";
-        this.evaluation = "";
-        this.showReview = false;
-        this.staffNm = "";
-        this.department = "";
-        this.commentsList = [];
-        this.ShowReply({}, -1);
-        this.showcomment = false;
-        this.$refs.infiniteLoading.$emit("$InfiniteLoading:reset");
+      }
+      const resultSave = await this.saveComments(params)
+      if (resultSave === 'Save Success!') {
+        this.contentForReview = ''
+        this.salary = ''
+        this.evaluation = ''
+        this.showReview = false
+        this.staffNm = ''
+        this.department = ''
+        this.commentsList = []
+        this.ShowReply({}, -1)
+        this.showcomment = false
+        this.$refs.infiniteLoading.$emit('$InfiniteLoading:reset')
       }
     },
-    closeReviewCompany() {
-      this.showReview = false;
+    closeReviewCompany () {
+      this.showReview = false
     },
-    reviewCompany() {
-      this.showReview = true;
+    reviewCompany () {
+      this.showReview = true
     },
-    replyForReview(item, index) {
-      this.showCommentForeachReply = index;
-      this.showcomment = true;
-      this.itemDetails = item;
-      this.itemsReply = { item: item, index: index };
+    replyForReview (item, index) {
+      this.showCommentForeachReply = index
+      this.showcomment = true
+      this.itemDetails = item
+      this.itemsReply = { item: item, index: index }
     },
-    closeReply(item, index) {
-      this.showCommentForeachReply = index;
-      this.showcomment = false;
+    closeReply (item, index) {
+      this.showCommentForeachReply = index
+      this.showcomment = false
     },
-    async addreply() {
+    async addreply () {
       const paramReply = {
         contents: this.commentforReply,
         commentId: this.itemDetails._id
-      };
-      await this.saveReplyCompany(paramReply);
-      this.commentforReply = "";
-      this.ShowReply(this.itemsReply.item, this.itemsReply.index);
+      }
+      await this.saveReplyCompany(paramReply)
+      this.commentforReply = ''
+      this.ShowReply(this.itemsReply.item, this.itemsReply.index)
     }
   }
-};
+}
 </script>
