@@ -34,22 +34,22 @@
                   </v-img>
                 </v-col>
                 <v-row no-gutters>
-                  <v-list-item-content @click="commentCompany(item)">
+                  <v-list-item-content  style="font-size:20px" @click="commentCompany(item)">
                     <a class="text-md-left hovertext">
                       {{item.companyNm}}
                     </a>
                     <v-row>
                       <v-col class="text-md-left col-5">
-                          <v-list-item-subtitle v-html="item.addressCd"></v-list-item-subtitle>
-                          <v-list-item-subtitle>Số lượng comments: {{item.count}}</v-list-item-subtitle>
-                           <v-row no-gutters>
+                          <v-list-item-subtitle  style="font-size:18px" v-html="item.addressCd"></v-list-item-subtitle>
+                          <v-list-item-subtitle  style="font-size:18px">Số lượng comments: {{item.count}}</v-list-item-subtitle>
+                           <!-- <v-row no-gutters>
                               <v-col class="text-md-left col-6">
                               <v-list-item-subtitle>Số lượng views: {{item.count}}</v-list-item-subtitle>
                               </v-col>
                                <v-col class="text-md-left col-6">
                               <v-list-item-subtitle>Số lượng follow: {{item.count}}</v-list-item-subtitle>
                                </v-col>
-                           </v-row>
+                           </v-row> -->
                       </v-col>
                     </v-row>
                   </v-list-item-content>
