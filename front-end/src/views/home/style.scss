@@ -25,6 +25,12 @@ $md-view: 720px;
 $lg-view: 960px;
 $xl-view: 1140px;
 
+@media only screen and (min-width:600px){
+    .search div.v-input__slot{
+        
+    };
+  }
+
 @function toRem($size) {
     $remSize: $size / $df-fs;
     @return #{$remSize}rem;
@@ -34,10 +40,10 @@ $xl-view: 1140px;
     @return #{$remSize}rem;
 }
 .search div.v-input__slot{
-    width: toRem(500) !important;
-    align-self: center !important;
-    position: absolute  !important;
-    bottom: 0  !important;
+    width: toRem(550) !important;
+    align-self: center ;
+    position: absolute  ;
+    bottom: 0  ;
 };
 .hovertext:hover {
     font-size: 17px;

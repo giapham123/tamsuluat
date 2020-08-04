@@ -2,7 +2,6 @@
   <v-container>
     <div>
       <v-img :src="require('../../assets/rview.jpg')" class="background" >
-      <!-- <v-col cols="6" sm="6" align="center" class="textSearch"> -->
         <v-text-field
           style="margin-top:30px"
           class="mx-4 search"
@@ -19,7 +18,7 @@
       </v-row>
     </div>
     <v-row>
-      <v-col cols="6" sm="9">
+      <v-col cols="12" sm="9" xs="9">
         <v-card>
            <nodata v-show="nodataShow"></nodata>
           <v-list v-show="nodataShowList">
