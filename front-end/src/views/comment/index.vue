@@ -222,7 +222,7 @@
         </v-card-text>
       </v-card>
     </div>
-    <nodata v-show="nodataShow"></nodata>
+    <nodata v-show="nodataShow" :msg="msg"></nodata>
     <infinite-loading @infinite="infiniteHandler" ref="infiniteLoading">
       <span slot="no-more"></span>
     </infinite-loading>
@@ -242,6 +242,7 @@ export default {
     popupcomment
   },
   data: () => ({
+    msg:"Không Có Comments",
     showPopupComment: false,
     nodataShow: false,
     evaluation: "",

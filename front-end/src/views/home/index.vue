@@ -19,7 +19,7 @@
     <v-row>
       <v-col cols="12" sm="9" xs="9">
         <v-card>
-          <nodata v-show="nodataShow"></nodata>
+          <nodata v-show="nodataShow" :msg="msg"></nodata>
           <v-list v-show="nodataShowList">
             <template v-for="(item) in itemsCompanyList">
               <v-divider :key="item.index"></v-divider>
@@ -109,6 +109,7 @@ export default {
   },
   data() {
     return {
+      msg:"Không Tìm Thấy Công Ty",
       overlay: true,
       nodataShowList: true,
       nodataShow: false,
