@@ -6,10 +6,14 @@
       <router-link to="/about">About</router-link>
     </div> -->
     <!-- <keep-alive><router-view/></keep-alive> -->
-    <router-view/>
+    <keep-alive>
+        <router-view :key="$route.path"></router-view>
+      </keep-alive>
   </v-app>
 </template>
+<script>
 
+</script>
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
