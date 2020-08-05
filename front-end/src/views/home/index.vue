@@ -25,7 +25,7 @@
               <v-divider :key="item.index"></v-divider>
               <v-list-item :key="item.index" class="hoverCard">
                 <v-col cols="4" sm="2">
-                <v-avatar class="profile" color="grey" size="80" tile>
+                <v-avatar class="profile" color="grey" size="60" tile>
                   <v-img :src="item.image"></v-img>
                 </v-avatar></v-col>
 
@@ -35,13 +35,13 @@
                   </v-img>
                 </v-col>-->
                 <v-row>
-                  <v-list-item-content style="font-size:18px" @click="commentCompany(item)">
+                  <v-list-item-content style="font-size:15px" @click="commentCompany(item)">
                     <a class="text-md-left hovertext">{{item.companyNm}}</a>
                     <v-row>
                       <v-col class="text-md-left col-5">
-                        <v-list-item-subtitle  style="font-size:15px" v-html="item.addressCd"></v-list-item-subtitle>
+                        <v-list-item-subtitle  style="font-size:13px" v-html="item.addressCd"></v-list-item-subtitle>
                         <v-list-item-subtitle
-                          style="font-size:15px"
+                          style="font-size:13px"
                         >Số lượng comments: {{item.count}}</v-list-item-subtitle>
                         <!-- <v-row no-gutters>
                               <v-col class="text-md-left col-6">
