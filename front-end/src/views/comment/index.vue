@@ -482,8 +482,8 @@ export default {
           flag: this.dataForLikeAndDislike.flag
         }
         await this.updateLikeAndDislike(params)
-        this.commentsList = [];
         this.showReCaptcha = false
+        this.commentsList = [];
         this.$refs.infiniteLoading.$emit("$InfiniteLoading:reset");
       }
     },
