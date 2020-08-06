@@ -8,6 +8,7 @@ router.post('/saveComments', commentController.saveComment);
 router.get('/getComments/:idCompany', commentController.getComments);
 router.get('/getComments/loadmore/:idCompany&paging=:page', commentController.getCommentsLoadMore);
 router.get('/getCommentsLatest', commentController.getCommentsLatest);
+router.post('/updateLikeAndDislike', commentController.updateLikeAndDislike);
 
 
 module.exports = router;

@@ -19,12 +19,14 @@
         </v-row>
       </v-col>
       <v-col align="right">
-        <v-btn class="ma-2 buttonStyle" depressed large color="primary" @click="reviewCompany"><v-icon>create</v-icon> Viết Review</v-btn>
+        <v-btn class="ma-2 buttonStyle" depressed large color="primary" @click="reviewCompany">
+          <v-icon>create</v-icon>Viết Review
+        </v-btn>
       </v-col>
     </v-row>
     <!-- <div class="my-2 text-md-left">
       <v-btn depressed small color="primary" @click="reviewCompany">Review</v-btn>
-    </div> -->
+    </div>-->
 
     <v-divider></v-divider>
     <!-- <v-card v-show="showReview">
@@ -60,7 +62,7 @@
         >Đăng Comment</v-btn>
         <v-btn @click="closeReviewCompany" small v-show="showReview">Hủy bỏ</v-btn>
       </v-container>
-    </v-card> -->
+    </v-card>-->
     <div v-for="(item,index) in commentsList" :key="index" style="padding-top:5px">
       <v-card>
         <v-card-text>
@@ -68,12 +70,12 @@
             <v-card-subtitle class="text-md-left">
               <b
                 style="color:blue; margin-left: -15px; font-size:15px"
-              >{{item.commentName}} ({{item.department}}) {{item.evaluation}}</b>
+              >{{item.commentName}} ({{item.department}})</b>
             </v-card-subtitle>
             <v-col cols="6">
               <v-row no-gutters>
                 <v-card-subtitle>Báo cáo ngày: {{item.createdAt}}</v-card-subtitle>
-                <v-card-subtitle v-if="item.evaluation == 'Max Sida'">
+                <v-card-subtitle v-if="item.evaluation == 1">
                   <font-awesome-icon icon="star" size="lg" :style="{ color: 'yellow' }" />
                   <font-awesome-icon
                     :icon="['far', 'star']"
@@ -97,7 +99,7 @@
                   />
                 </v-card-subtitle>
                 <v-card-subtitle
-                  v-else-if="item.evaluation == 'Hết thuốc chữa, Đang tính đường chuồn'"
+                  v-else-if="item.evaluation == 2"
                 >
                   <font-awesome-icon icon="star" size="lg" :style="{ color: 'yellow' }" />
                   <font-awesome-icon icon="star" size="lg" :style="{ color: 'yellow' }" />
@@ -117,7 +119,7 @@
                     :style="{ color: 'yellow' }"
                   />
                 </v-card-subtitle>
-                <v-card-subtitle v-else-if="item.evaluation== 'Cũng tạm'">
+                <v-card-subtitle v-else-if="item.evaluation== 3">
                   <font-awesome-icon icon="star" size="lg" :style="{ color: 'yellow' }" />
                   <font-awesome-icon icon="star" size="lg" :style="{ color: 'yellow' }" />
                   <font-awesome-icon icon="star" size="lg" :style="{ color: 'yellow' }" />
@@ -132,7 +134,7 @@
                     :style="{ color: 'yellow' }"
                   />
                 </v-card-subtitle>
-                <v-card-subtitle v-else-if="item.evaluation == 'Ngon'">
+                <v-card-subtitle v-else-if="item.evaluation == 4">
                   <font-awesome-icon icon="star" size="lg" :style="{ color: 'yellow' }" />
                   <font-awesome-icon icon="star" size="lg" :style="{ color: 'yellow' }" />
                   <font-awesome-icon icon="star" size="lg" :style="{ color: 'yellow' }" />
@@ -159,12 +161,21 @@
           >{{item.contents}}</div>
           <v-divider></v-divider>
           <div class="text-md-left" style="margin-top: 5px">
-            <v-btn depressed small color="primary" @click="replyForReview(item,index)">Reply</v-btn>
+            <v-btn icon small color=" whitesmoke lighten-2" @click="likeComment(item)">
+              <v-icon>mdi-thumb-up</v-icon>
+            </v-btn>
+            <b>{{item.like}}</b>
+            <v-btn icon small style="margin-left: 5px" color="whitesmoke lighten-2" @click="dislikeComment(item)">
+              <v-icon>mdi-thumb-down</v-icon>
+            </v-btn>
+            <b>{{item.dislike}}</b>
+            <a @click="replyForReview(item,index)" style="margin-left: 10px"><b>PHẢN HỒI</b></a>
             <a
               style="margin-left: 5px"
               v-if="item.qty != 0"
               @click="ShowReply(item,index)"
             >See reply {{item.qty}}</a>
+            
           </div>
           <v-flex xs12 sm10 d-flex style="margin-left: 20px">
             <v-row>
@@ -226,7 +237,7 @@
     <infinite-loading @infinite="infiniteHandler" ref="infiniteLoading">
       <span slot="no-more"></span>
     </infinite-loading>
-    <popupcomment :showDialog="showPopupComment" @closePopup="closePopupEvent" :params="items"/>
+    <popupcomment :showDialog="showPopupComment" @closePopup="closePopupEvent" :params="items" />
   </v-container>
 </template>
 <script>
@@ -234,15 +245,15 @@ import InfiniteLoading from "vue-infinite-loading";
 import { mapActions } from "vuex";
 import nodata from "../commons/noData";
 import "./style.scss";
-import popupcomment from './popup_comment'
+import popupcomment from "./popup_comment";
 export default {
   components: {
     InfiniteLoading,
     nodata,
-    popupcomment
+    popupcomment,
   },
   data: () => ({
-    msg:"Không Có Comments",
+    msg: "Không Có Comments",
     showPopupComment: false,
     nodataShow: false,
     evaluation: "",
@@ -273,11 +284,9 @@ export default {
     showReplyComment: -1,
     dataForReply: [],
     itemsReply: {},
-    items:{}
+    items: {},
   }),
-  watch:{
-
-  },
+  watch: {},
   created() {
     this.loadingCompany();
   },
@@ -288,6 +297,7 @@ export default {
       "saveReplyCompany",
       "getCommentsLoadMore",
       "getReplyOfComment",
+      "updateLikeAndDislike"
     ]),
     ...mapActions("home", ["getCompanyForSearch"]),
     async ShowReply(item, index) {
@@ -391,17 +401,16 @@ export default {
     // closeReviewCompany() {
     //   this.showReview = false;
     // },
-    async closePopupEvent(){
+    async closePopupEvent() {
       this.commentsList = [];
-     this.$refs.infiniteLoading.$emit("$InfiniteLoading:reset");
-      this.showPopupComment = false
-      
+      this.$refs.infiniteLoading.$emit("$InfiniteLoading:reset");
+      this.showPopupComment = false;
     },
     reviewCompany() {
       this.items = {
-        companyCd: this.dataCompany[0]._source.companyCd
-      }
-      this.showPopupComment = true
+        companyCd: this.dataCompany[0]._source.companyCd,
+      };
+      this.showPopupComment = true;
     },
     replyForReview(item, index) {
       this.showCommentForeachReply = index;
@@ -414,6 +423,9 @@ export default {
       this.showcomment = false;
     },
     async addreply() {
+      if(this.commentforReply.trim() == '' || this.commentforReply.trim() == null){
+        return
+      }
       const paramReply = {
         contents: this.commentforReply,
         commentId: this.itemDetails._id,
@@ -422,6 +434,27 @@ export default {
       this.commentforReply = "";
       this.ShowReply(this.itemsReply.item, this.itemsReply.index);
     },
+    async likeComment(item){
+      var params = {
+        _id:item._id,
+        like: item.like,
+        dislike: item.dislike,
+        flag:1
+      }
+      await this.updateLikeAndDislike(params)
+      this.commentsList = [];
+      this.$refs.infiniteLoading.$emit("$InfiniteLoading:reset");
+    },
+    async dislikeComment(item){
+      var params = {
+        _id:item._id,
+        dislike: item.dislike,
+        like: item.like
+      }
+      await this.updateLikeAndDislike(params)
+      this.commentsList = [];
+      this.$refs.infiniteLoading.$emit("$InfiniteLoading:reset");
+    }
   },
 };
 </script>

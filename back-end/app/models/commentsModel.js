@@ -6,7 +6,9 @@ const CommentSchema = mongoose.Schema({
     salary: String,
     companyCd: String,
     commentName: String,
-    department: String
+    department: String,
+    like: Number,
+    dislike:Number
 }, {
     timestamps: true
 });

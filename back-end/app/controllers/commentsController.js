@@ -1,5 +1,5 @@
 const commentModel = require('../models/commentsModel');
-
+var mongoose = require('mongoose');
 exports.saveComment = async (req, res) => {
     const paramComment = new commentModel({
         contents: req.body.contents,
@@ -71,3 +71,32 @@ exports.getCommentsLatest = async (req, res) => {
         res.send(result);
     }
 }
+exports.updateLikeAndDislike = async (req, res) => {
+    var objectCommentId = mongoose.Types.ObjectId(req.body._id);
+    var like = req.body.like
+    var dislike = req.body.dislike
+    if(req.body.flag == 1){
+        if(isNumber(req.body.like)){
+            like = req.body.like + 1
+        }else{
+            like = 1
+        }
+    }else {
+        if(isNumber(req.body.dislike)){
+            dislike = req.body.dislike + 1
+        }else{
+            dislike = 1
+        }
+    }
+    var result = await commentModel.update(
+        {_id:objectCommentId},
+        {$set:{
+            like:like,
+            dislike:dislike
+        }});
+    if (result != null) {
+        res.send('update Success!');
+    }
+}
+function isNumber(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); } 
+ 

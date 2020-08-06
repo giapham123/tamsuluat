@@ -10,9 +10,11 @@
             <v-text-field label="Tên Nhân Viên" outlined dense v-model="staffNm"></v-text-field>
             <v-text-field label="Thuộc bộ phận" outlined dense v-model="department"></v-text-field>
             <v-select
-              :items="itemsDanhGia"
+              :items="itemsDanhGiaS"
               label="Đánh giá công ty"
               v-model="evaluation"
+              item-text="text"
+              item-value="code"
               dense
               outlined
             ></v-select>
@@ -61,6 +63,24 @@ export default {
       "Ngon",
       "Công ty tuyệt vời",
     ],
+    itemsDanhGiaS: [
+      {
+        code:1,
+        text:"Max Sida",
+      },{
+        code:2,
+        text: "Hết thuốc chữa, Đang tính đường chuồn",
+      },{
+        code:3,
+        text: "Cũng tạm",
+      },{
+        code:4,
+        text:"Ngon",
+      },{
+        code:5,
+        text: "Công ty tuyệt vời",
+      }
+    ],
   }),
   watch:{
      
@@ -71,13 +91,13 @@ export default {
   methods: {
     ...mapActions("comments", ["saveComments"]),
     async addReview() {
-      if (this.staffNm == null) {
+      if (this.staffNm.trim() == null || this.staffNm.trim() == '') {
         this.staffNm = "Anonymous";
       }
-      if (this.department == null) {
+      if (this.department.trim() == null || this.department.trim() == '') {
         this.department = "Boss";
       }
-      if (this.contentForReview === "") {
+      if (this.contentForReview.trim() == "") {
         return;
       }
       const params = {

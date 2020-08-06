@@ -20,3 +20,7 @@ export const getReplyOfComment = async (dispatch, param) => {
   const resultReplyOfComment = await client.post('getReplyOfComment', param)
   return resultReplyOfComment.data
 }
+export const updateLikeAndDislike = async (dispatch, params) => {
+  const updateLikeAndDislike = await client.post('updateLikeAndDislike', params)
+  return updateLikeAndDislike.data
+}
