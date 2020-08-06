@@ -486,6 +486,7 @@ export default {
         this.$refs.infiniteLoading.$emit("$InfiniteLoading:reset");
       }
        this.showReCaptcha = false
+        this.showCaptchaInearchRow = -1
     },
   },
 };
