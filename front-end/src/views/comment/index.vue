@@ -168,6 +168,7 @@
             <v-btn icon small style="margin-left: 5px" color="whitesmoke lighten-2" @click="dislikeComment(item)">
               <v-icon>mdi-thumb-down</v-icon>
             </v-btn>
+            <vue-recaptcha sitekey="6Le1LrsZAAAAAEL-M9owy1ElVMJNp61kpD2ZThVH" @verify="onVerify" :loadRecaptchaScript="showReCaptcha"></vue-recaptcha>
             <b>{{item.dislike}}</b>
             <a @click="replyForReview(item,index)" style="margin-left: 10px"><b>PHẢN HỒI</b></a>
             <a
@@ -241,6 +242,7 @@
   </v-container>
 </template>
 <script>
+import VueRecaptcha from 'vue-recaptcha';
 import InfiniteLoading from "vue-infinite-loading";
 import { mapActions } from "vuex";
 import nodata from "../commons/noData";
@@ -251,8 +253,10 @@ export default {
     InfiniteLoading,
     nodata,
     popupcomment,
+    VueRecaptcha
   },
   data: () => ({
+    showReCaptcha: false,
     msg: "Không Có Comments",
     showPopupComment: false,
     nodataShow: false,
@@ -285,6 +289,8 @@ export default {
     dataForReply: [],
     itemsReply: {},
     items: {},
+    robot:false,
+    dataForLikeAndDislike:{}
   }),
   watch: {},
   created() {
@@ -434,14 +440,16 @@ export default {
       this.commentforReply = "";
       this.ShowReply(this.itemsReply.item, this.itemsReply.index);
     },
-    async likeComment(item){
-      var params = {
-        _id:item._id,
-        like: item.like,
-        dislike: item.dislike,
-        flag:1
-      }
-      await this.updateLikeAndDislike(params)
+    likeComment(item){
+      this.dataForLikeAndDislike = item
+      this.showReCaptcha = true
+      // var params = {
+      //   _id:item._id,
+      //   like: item.like,
+      //   dislike: item.dislike,
+      //   flag:1
+      // }
+      // await this.updateLikeAndDislike(params)
       this.commentsList = [];
       this.$refs.infiniteLoading.$emit("$InfiniteLoading:reset");
     },
@@ -451,10 +459,25 @@ export default {
         dislike: item.dislike,
         like: item.like
       }
-      await this.updateLikeAndDislike(params)
-      this.commentsList = [];
-      this.$refs.infiniteLoading.$emit("$InfiniteLoading:reset");
-    }
+      // this.showReCaptcha = true
+      // await this.updateLikeAndDislike(params)
+      // this.commentsList = [];
+      // this.$refs.infiniteLoading.$emit("$InfiniteLoading:reset");
+    },
+    async onVerify (response) {
+      if (response)
+      {
+        var params = {
+          _id:this.dataForLikeAndDislike._id,
+          like: this.dataForLikeAndDislike.like,
+          dislike: this.dataForLikeAndDislike.dislike,
+          flag:1
+        }
+        await this.updateLikeAndDislike(params)
+        this.commentsList = [];
+        this.$refs.infiniteLoading.$emit("$InfiniteLoading:reset");
+      }
+    },
   },
 };
 </script>
