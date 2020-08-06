@@ -165,10 +165,10 @@
               <v-icon>mdi-thumb-up</v-icon>
             </v-btn>
             <b>{{item.like}}</b>
-            <v-btn icon small style="margin-left: 5px" color="whitesmoke lighten-2" @click="dislikeComment(item)">
+            <v-btn icon small style="margin-left: 5px" color="whitesmoke lighten-2" @click="dislikeComment(item,index)">
               <v-icon>mdi-thumb-down</v-icon>
             </v-btn>
-            <vue-recaptcha  v-if="showCaptchaInearchRow == index" sitekey="6Le1LrsZAAAAAEL-M9owy1ElVMJNp61kpD2ZThVH" @verify="onVerify" :loadRecaptchaScript="showReCaptcha"></vue-recaptcha>
+            
             <b>{{item.dislike}}</b>
             <a @click="replyForReview(item,index)" style="margin-left: 10px"><b>PHẢN HỒI</b></a>
             <a
@@ -176,7 +176,7 @@
               v-if="item.qty != 0"
               @click="ShowReply(item,index)"
             >See reply {{item.qty}}</a>
-            
+            <vue-recaptcha  v-if="showCaptchaInearchRow == index" sitekey="6Le1LrsZAAAAAEL-M9owy1ElVMJNp61kpD2ZThVH" @verify="onVerify" :loadRecaptchaScript="showReCaptcha"></vue-recaptcha>
           </div>
           <v-flex xs12 sm10 d-flex style="margin-left: 20px">
             <v-row>
@@ -457,10 +457,11 @@ export default {
       this.commentsList = [];
       this.$refs.infiniteLoading.$emit("$InfiniteLoading:reset");
     },
-    async dislikeComment(item){
+    async dislikeComment(item, index){
        this.showCaptchaInearchRow = index
       this.dataForLikeAndDislike = item
       this.showReCaptcha = true
+      this.dataForLikeAndDislike.flag = 0
       // var params = {
       //   _id:item._id,
       //   dislike: item.dislike,
@@ -477,10 +478,12 @@ export default {
         var params = {
           _id:this.dataForLikeAndDislike._id,
           like: this.dataForLikeAndDislike.like,
-          dislike: this.dataForLikeAndDislike.dislike
+          dislike: this.dataForLikeAndDislike.dislike,
+          flag: this.dataForLikeAndDislike.flag
         }
         await this.updateLikeAndDislike(params)
         this.commentsList = [];
+        this.showReCaptcha = false
         this.$refs.infiniteLoading.$emit("$InfiniteLoading:reset");
       }
     },
