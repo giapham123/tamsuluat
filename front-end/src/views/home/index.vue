@@ -173,8 +173,8 @@ export default {
       for (let i = 0; i < resultCompany.length; i++) {
         // resultCompany[i]._source.image =
         //   "data:image/jpeg;base64," + resultCompany[i]._source.image;
-        this.itemsCompanyList.push(resultCompany[i]._source);
          resultCompany[i].image = process.env.VUE_APP_SERVER + resultCompany[i]._source.image;
+        this.itemsCompanyList.push(resultCompany[i]._source);
       }
       if (resultCompany.length > 0) {
         this.overlay = false;
