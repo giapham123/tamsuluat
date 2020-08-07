@@ -31,7 +31,7 @@
         </v-card>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn small color="primary" @click="closePopup">Close</v-btn>
+          <v-btn small color="primary" @click="showDialog =false">Close</v-btn>
           <v-btn small color="primary" @click="addReview">Đăng Comment</v-btn>
         </v-card-actions>
       </v-card>
@@ -106,6 +106,7 @@ export default {
         companyCd: this.params.companyCd,
         staffNm: this.staffNm,
         department: this.department,
+        commentName: this.staffNm
       };
       const resultSave = await this.saveComments(params);
       if (resultSave === "Save Success!") {
