@@ -411,6 +411,9 @@ export default {
       this.dataForLikeAndDislike.flag = 1
       this.showReCaptcha = true
       this.dataForLikeAndDislike.index = index
+       if( typeof this.dataForLikeAndDislike.like == 'undefined'){
+        this.dataForLikeAndDislike.like = 0
+      }
     },
     async dislikeComment(item, index){
       this.showCaptchaInearchRow = index
@@ -418,6 +421,9 @@ export default {
       this.showReCaptcha = true
       this.dataForLikeAndDislike.flag = 0
       this.dataForLikeAndDislike.index = index
+       if( typeof this.dataForLikeAndDislike.dislike == 'undefined'){
+        this.dataForLikeAndDislike.dislike = 0
+      }
     },
     async onVerify (response) {
       if (response)
