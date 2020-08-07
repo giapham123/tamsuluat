@@ -1,9 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-// import Home from '../views/Home.vue'
 import Home from '../views/home/'
 import Comment from '../views/comment/'
-
+import company from '../views/company/'
 Vue.use(VueRouter)
 
 const routes = [
@@ -17,7 +16,14 @@ const routes = [
     name: 'Comment',
     component: Comment,
     props: true
+  },
+  {
+    path: '/Addcompany',
+    name: 'company',
+    component: company,
+    props: true
   }
+  
 ]
 
 const router = new VueRouter({

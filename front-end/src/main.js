@@ -12,8 +12,11 @@ import { faStar } from '@fortawesome/free-solid-svg-icons'
 import { faStar as farStar } from '@fortawesome/free-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
+
 library.add(faStar, farStar)
 Vue.prototype.moment = moment
+const EventBus = new Vue()
+Vue.prototype.$bus = EventBus
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.use(Vuetify, {
   iconfont: 'md'

@@ -107,18 +107,17 @@ export default {
         staffNm: this.staffNm,
         department: this.department,
       };
-    //   console.log(params);
       const resultSave = await this.saveComments(params);
       if (resultSave === "Save Success!") {
         this.contentForReview = "";
         this.evaluation = "";
         this.staffNm = "";
         this.department = "";
-        this.closePopup()
+        this.closePopup(params)
       }
     },
-    closePopup() {
-      this.$emit("closePopup", false);
+    closePopup(params) {
+      this.$emit("closePopup", params);
     },
   },
 };

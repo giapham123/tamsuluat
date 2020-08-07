@@ -408,9 +408,8 @@ export default {
     // closeReviewCompany() {
     //   this.showReview = false;
     // },
-    async closePopupEvent() {
-      this.commentsList = [];
-      this.$refs.infiniteLoading.$emit("$InfiniteLoading:reset");
+    async closePopupEvent(params) {
+      this.commentsList.unshift(params);
       this.showPopupComment = false;
     },
     reviewCompany() {
@@ -462,13 +461,6 @@ export default {
       this.dataForLikeAndDislike = item
       this.showReCaptcha = true
       this.dataForLikeAndDislike.flag = 0
-      // var params = {
-      //   _id:item._id,
-      //   dislike: item.dislike,
-      //   like: item.like
-      // }
-      // this.showReCaptcha = true
-      // await this.updateLikeAndDislike(params)
       this.commentsList = [];
       this.$refs.infiniteLoading.$emit("$InfiniteLoading:reset");
     },
