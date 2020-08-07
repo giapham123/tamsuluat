@@ -171,9 +171,10 @@ export default {
         return;
       }
       for (let i = 0; i < resultCompany.length; i++) {
-        resultCompany[i]._source.image =
-          "data:image/jpeg;base64," + resultCompany[i]._source.image;
-        this.itemsCompanyList.push(resultCompany[i]._source);
+        // resultCompany[i]._source.image =
+        //   "data:image/jpeg;base64," + resultCompany[i]._source.image;
+        // this.itemsCompanyList.push(resultCompany[i]._source);
+         resultCompany[i].image = process.env.VUE_APP_SERVER + resultCompany[i]._source.image;
       }
       if (resultCompany.length > 0) {
         this.overlay = false;
@@ -191,8 +192,9 @@ export default {
       };
       var resultCompany = await this.getCompany(pages);
       for (let i = 0; i < resultCompany.length; i++) {
-        resultCompany[i].image =
-          "data:image/jpeg;base64," + resultCompany[i].image;
+        // resultCompany[i].image =
+        //   "data:image/jpeg;base64," + resultCompany[i].image;
+        resultCompany[i].image = process.env.VUE_APP_SERVER + resultCompany[i].image;
       }
       this.itemsCompanyList = resultCompany;
       this.itemsCompany = this.itemsCompanyList;

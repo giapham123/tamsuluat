@@ -11,7 +11,7 @@
       <v-col>
         <v-row class="flex-column ma-0 fill-height" justify="center">
           <v-card-title>
-            <b style="color:black; font-size:24px">{{companyNm}}</b>
+            <b style="color:black; font-size:20px">{{companyNm}}</b>
           </v-card-title>
           <v-row style="margin-top:-20px; margin-left:1px">
             <v-card-subtitle>{{addressCompany}}</v-card-subtitle>
@@ -353,7 +353,7 @@ export default {
       this.addressCompany = resultCompany[0]._source.addressCd;
       this.sizeCompany = resultCompany[0]._source.sizePeople;
       this.imageCompany =
-        "data:image/jpeg;base64," + resultCompany[0]._source.image;
+        process.env.VUE_APP_SERVER + resultCompany[0]._source.image;
     },
     async getCommentForCompany() {
       var pages = {
