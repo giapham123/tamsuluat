@@ -410,12 +410,14 @@ export default {
       this.dataForLikeAndDislike = item
       this.dataForLikeAndDislike.flag = 1
       this.showReCaptcha = true
+      this.dataForLikeAndDislike.index = index
     },
     async dislikeComment(item, index){
-       this.showCaptchaInearchRow = index
+      this.showCaptchaInearchRow = index
       this.dataForLikeAndDislike = item
       this.showReCaptcha = true
       this.dataForLikeAndDislike.flag = 0
+      this.dataForLikeAndDislike.index = index
     },
     async onVerify (response) {
       if (response)
@@ -427,9 +429,12 @@ export default {
           flag: this.dataForLikeAndDislike.flag
         }
         var result = await this.updateLikeAndDislike(params)
-        if(result.data = 'success'){
-          this.commentsList = [];
-          this.$refs.infiniteLoading.$emit("$InfiniteLoading:reset");
+        if(result = 'success'){
+          if(this.dataForLikeAndDislike.flag == 0){
+            this.commentsList[this.dataForLikeAndDislike.index].dislike = item.dislike + 1 
+          }else{
+            this.commentsList[this.dataForLikeAndDislike.index].like = item.like + 1 
+          }
         }
       
       }
