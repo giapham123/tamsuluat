@@ -431,15 +431,14 @@ export default {
         var result = await this.updateLikeAndDislike(params)
         if(result = 'success'){
           if(this.dataForLikeAndDislike.flag == 0){
-            this.commentsList[this.dataForLikeAndDislike.index].dislike = item.dislike + 1 
+            this.commentsList[this.dataForLikeAndDislike.index].dislike = this.dataForLikeAndDislike.dislike + 1 
           }else{
-            this.commentsList[this.dataForLikeAndDislike.index].like = item.like + 1 
+            this.commentsList[this.dataForLikeAndDislike.index].like = this.dataForLikeAndDislike.like + 1 
           }
         }
-      
       }
-       this.showReCaptcha = false
-        this.showCaptchaInearchRow = -1
+      this.showReCaptcha = false
+      this.showCaptchaInearchRow = -1
     },
   },
 };
