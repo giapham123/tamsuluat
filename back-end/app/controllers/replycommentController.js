@@ -1,22 +1,30 @@
 const replyCommentModel = require('../models/replycommentModel');
 var mongoose = require('mongoose');
-exports.saveReplyComment = async (req,res) => {
+exports.saveReplyComment = async (req, res) => {
     var objectId = mongoose.Types.ObjectId(req.body.commentId);
     const paramReplyComment = new replyCommentModel({
         contents: req.body.contents,
         commentId: objectId
     });
     var result = await paramReplyComment.save();
-    if(result != null){
+    if (result != null) {
         res.send('Save Success!');
     }
 }
 
-exports.getReplyOfComment = async (req,res) => {
+exports.getReplyOfComment = async (req, res) => {
     var objectCommentId = mongoose.Types.ObjectId(req.body._id);
-    var result = await replyCommentModel.find({commentId : objectCommentId});
-    if(result != null){
+    var result = await replyCommentModel.aggregate([{
+        $match: {
+            commentId: objectCommentId
+        }
+    }, {
+        $sort: {
+            createdAt: -1
+        }
+    }])
+    if (result != null) {
         res.send(result);
     }
-    
+
 }

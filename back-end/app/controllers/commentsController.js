@@ -95,7 +95,7 @@ exports.updateLikeAndDislike = async (req, res) => {
             dislike:dislike
         }});
     if (result != null) {
-        res.send('update Success!');
+        res.send('success');
     }
 }
 function isNumber(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); } 

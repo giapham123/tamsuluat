@@ -373,41 +373,6 @@ export default {
         }
       }
     },
-    // async addReview() {
-    //   if (this.staffNm === "") {
-    //     this.staffNm = "Anonymous";
-    //   }
-    //   if (this.department === "") {
-    //     this.department = "Boss";
-    //   }
-    //   if (this.contentForReview === "") {
-    //     return;
-    //   }
-    //   const params = {
-    //     contents: this.contentForReview,
-    //     evaluation: this.evaluation,
-    //     salary: this.salary,
-    //     companyCd: this.dataCompany[0]._source.companyCd,
-    //     staffNm: this.staffNm,
-    //     department: this.department,
-    //   };
-    //   const resultSave = await this.saveComments(params);
-    //   if (resultSave === "Save Success!") {
-    //     this.contentForReview = "";
-    //     this.salary = "";
-    //     this.evaluation = "";
-    //     this.showReview = false;
-    //     this.staffNm = "";
-    //     this.department = "";
-    //     this.commentsList = [];
-    //     this.ShowReply({}, -1);
-    //     this.showcomment = false;
-    //     this.$refs.infiniteLoading.$emit("$InfiniteLoading:reset");
-    //   }
-    // },
-    // closeReviewCompany() {
-    //   this.showReview = false;
-    // },
     async closePopupEvent(params) {
       this.commentsList.unshift(params);
       this.showPopupComment = false;
@@ -445,24 +410,12 @@ export default {
       this.dataForLikeAndDislike = item
       this.dataForLikeAndDislike.flag = 1
       this.showReCaptcha = true
-
-      // var params = {
-      //   _id:item._id,
-      //   like: item.like,
-      //   dislike: item.dislike,
-      //   flag:1
-      // }
-      // await this.updateLikeAndDislike(params)
-      this.commentsList = [];
-      this.$refs.infiniteLoading.$emit("$InfiniteLoading:reset");
     },
     async dislikeComment(item, index){
        this.showCaptchaInearchRow = index
       this.dataForLikeAndDislike = item
       this.showReCaptcha = true
       this.dataForLikeAndDislike.flag = 0
-      this.commentsList = [];
-      this.$refs.infiniteLoading.$emit("$InfiniteLoading:reset");
     },
     async onVerify (response) {
       if (response)
@@ -473,9 +426,12 @@ export default {
           dislike: this.dataForLikeAndDislike.dislike,
           flag: this.dataForLikeAndDislike.flag
         }
-        await this.updateLikeAndDislike(params)
-        this.commentsList = [];
-        this.$refs.infiniteLoading.$emit("$InfiniteLoading:reset");
+        var result = await this.updateLikeAndDislike(params)
+        if(result.data = 'success'){
+          this.commentsList = [];
+          this.$refs.infiniteLoading.$emit("$InfiniteLoading:reset");
+        }
+      
       }
        this.showReCaptcha = false
         this.showCaptchaInearchRow = -1
