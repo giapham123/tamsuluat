@@ -410,22 +410,23 @@ export default {
       this.dataForLikeAndDislike = item
       this.dataForLikeAndDislike.flag = 1
       this.dataForLikeAndDislike.index = index
-       if( typeof this.dataForLikeAndDislike.like == 'undefined'){
-        this.dataForLikeAndDislike.like = 0
-      }
+      
     },
     async dislikeComment(item, index){
       this.showCaptchaInearchRow = index
       this.dataForLikeAndDislike = item
       this.dataForLikeAndDislike.flag = 0
       this.dataForLikeAndDislike.index = index
-       if( typeof this.dataForLikeAndDislike.dislike == 'undefined'){
-        this.dataForLikeAndDislike.dislike = 0
-      }
     },
     async onVerify (response) {
       if (response)
       {
+        if( typeof this.dataForLikeAndDislike.like == 'undefined'){
+          this.dataForLikeAndDislike.like = 0
+        }
+        if( typeof this.dataForLikeAndDislike.dislike == 'undefined'){
+          this.dataForLikeAndDislike.dislike = 0
+        }
         var params = {
           _id:this.dataForLikeAndDislike._id,
           like: this.dataForLikeAndDislike.like,
