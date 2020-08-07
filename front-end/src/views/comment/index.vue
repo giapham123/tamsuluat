@@ -256,7 +256,7 @@ export default {
     VueRecaptcha
   },
   data: () => ({
-    showReCaptcha: false,
+    showReCaptcha: true,
     msg: "Không Có Comments",
     showPopupComment: false,
     nodataShow: false,
@@ -291,7 +291,7 @@ export default {
     items: {},
     robot:false,
     dataForLikeAndDislike:{},
-    showCaptchaInearchRow: 0
+    showCaptchaInearchRow: -1
   }),
   watch: {},
   created() {
@@ -409,7 +409,6 @@ export default {
       this.showCaptchaInearchRow = index
       this.dataForLikeAndDislike = item
       this.dataForLikeAndDislike.flag = 1
-      this.showReCaptcha = true
       this.dataForLikeAndDislike.index = index
        if( typeof this.dataForLikeAndDislike.like == 'undefined'){
         this.dataForLikeAndDislike.like = 0
@@ -418,7 +417,6 @@ export default {
     async dislikeComment(item, index){
       this.showCaptchaInearchRow = index
       this.dataForLikeAndDislike = item
-      this.showReCaptcha = true
       this.dataForLikeAndDislike.flag = 0
       this.dataForLikeAndDislike.index = index
        if( typeof this.dataForLikeAndDislike.dislike == 'undefined'){
