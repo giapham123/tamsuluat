@@ -24,45 +24,6 @@
         </v-btn>
       </v-col>
     </v-row>
-    <!-- <div class="my-2 text-md-left">
-      <v-btn depressed small color="primary" @click="reviewCompany">Review</v-btn>
-    </div>-->
-
-    <!-- <v-divider></v-divider> -->
-    <!-- <v-card v-show="showReview">
-      <v-col sm="6">
-        <v-text-field v-show="showReview" label="Tên Nhân Viên" outlined dense v-model="staffNm"></v-text-field>
-        <v-text-field v-show="showReview" label="Thuộc bộ phận" outlined dense v-model="department"></v-text-field>
-        <v-select
-          :items="itemsDanhGia"
-          label="Đánh giá công ty"
-          v-show="showReview"
-          v-model="evaluation"
-          dense
-          outlined
-        ></v-select>
-      </v-col>
-      <v-container>
-        <v-textarea
-          v-show="showReview"
-          v-model="contentForReview"
-          label="Review đi nek"
-          clearable
-          clear-icon="cancel"
-          auto-grow
-          rows="2"
-          row-height="15"
-        ></v-textarea>
-        <v-btn
-          @click="addReview"
-          small
-          v-show="showReview"
-          color="primary"
-          style="margin-right:5px"
-        >Đăng Comment</v-btn>
-        <v-btn @click="closeReviewCompany" small v-show="showReview">Hủy bỏ</v-btn>
-      </v-container>
-    </v-card>-->
     <div v-for="(item,index) in commentsList" :key="index" style="padding-top:5px">
       <v-card style="border-radius:0px" outlined>
         <v-card-text>
@@ -175,7 +136,7 @@
               style="margin-left: 5px"
               v-if="item.qty != 0"
               @click="ShowReply(item,index)"
-            >See reply {{item.qty}}</a>
+            >Xem {{item.qty}} câu trả lời</a>
             <vue-recaptcha  v-if="showCaptchaInearchRow == index" sitekey="6Le1LrsZAAAAAEL-M9owy1ElVMJNp61kpD2ZThVH" @verify="onVerify" :loadRecaptchaScript="showReCaptcha"></vue-recaptcha>
           </div>
           <v-flex xs12 sm10 d-flex style="margin-left: 20px">
