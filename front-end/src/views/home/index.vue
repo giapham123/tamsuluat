@@ -181,7 +181,7 @@ export default {
       }
     },
     commentCompany(item) {
-      this.$router.push({ path: `/${item.companyCd}` });
+      this.$router.push({ path: `/details/${item.companyCd}` });
     },
     async nextPage() {
       this.getListCompany(this.page);

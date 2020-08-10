@@ -22,6 +22,11 @@
   text-align: left;
   color: #2c3e50;
   background-color:whitesmoke;
+      font-weight: 500;
+    color: #1c1c1c;
+    /* text-transform: uppercase; */
+    letter-spacing: 2px;
+    display: block;
 }
 
 #nav {
