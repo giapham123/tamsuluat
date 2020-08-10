@@ -8,7 +8,7 @@
       <v-col cols="auto">
         <v-img height="100" width="100" :src="imageCompany" contain></v-img>
       </v-col>
-      <v-col>
+      <v-col cols="8">
         <v-row class="flex-column ma-0 fill-height" justify="center">
           <v-card-title>
             <b style="color:#1976d2 !important; font-size:20px">{{companyNm}}</b>
