@@ -1,6 +1,7 @@
 <template>
   <v-container class="container">
-    <div class="text-md-left"><v-icon large  @click="HomePage">home</v-icon>
+    <div class="text-md-left">
+      <v-icon large @click="HomePage">home</v-icon>
       / Review công ty {{companyNm}}
     </div>
     <v-row class="headerCompany">
@@ -26,23 +27,23 @@
     <div v-for="(item,index) in commentsList" :key="index" style="padding-top:5px">
       <v-card style="border-radius:0px" outlined class="mx-auto">
         <v-card-text>
-          <v-row no-gutters dense> 
+          <v-row no-gutters dense>
             <v-card-subtitle class="text-md-left">
               <b
                 style="color:#1976d2 !important; margin-left: -15px; font-size:15px"
               >{{item.commentName}} ({{item.department}})</b>
             </v-card-subtitle>
-            <v-col cols="6" >
+            <v-col cols="6">
               <v-row>
                 <v-card-subtitle>Báo cáo ngày: {{item.createdAt}}</v-card-subtitle>
-                <v-rating 
+                <v-rating
                   style="padding-top:12px"
                   dense
                   readonly
                   v-model="item.evaluation"
                   background-color="orange lighten-3"
                   color="orange"
-              ></v-rating>
+                ></v-rating>
               </v-row>
             </v-col>
           </v-row>
@@ -56,18 +57,31 @@
               <v-icon>mdi-thumb-up</v-icon>
             </v-btn>
             <b>{{item.like}}</b>
-            <v-btn icon small style="margin-left: 5px" color="whitesmoke lighten-2" @click="dislikeComment(item,index)">
+            <v-btn
+              icon
+              small
+              style="margin-left: 5px"
+              color="whitesmoke lighten-2"
+              @click="dislikeComment(item,index)"
+            >
               <v-icon>mdi-thumb-down</v-icon>
             </v-btn>
-            
+
             <b>{{item.dislike}}</b>
-            <a @click="replyForReview(item,index)" style="margin-left: 10px"><b>PHẢN HỒI</b></a>
+            <a @click="replyForReview(item,index)" style="margin-left: 10px">
+              <b>PHẢN HỒI</b>
+            </a>
             <a
               style="margin-left: 5px"
               v-if="item.qty != 0"
               @click="ShowReply(item,index)"
             >Xem {{item.qty}} câu trả lời</a>
-            <vue-recaptcha  v-if="showCaptchaInearchRow == index" sitekey="6Le1LrsZAAAAAEL-M9owy1ElVMJNp61kpD2ZThVH" @verify="onVerify" :loadRecaptchaScript="showReCaptcha"></vue-recaptcha>
+            <vue-recaptcha
+              v-if="showCaptchaInearchRow == index"
+              sitekey="6Le1LrsZAAAAAEL-M9owy1ElVMJNp61kpD2ZThVH"
+              @verify="onVerify"
+              :loadRecaptchaScript="showReCaptcha"
+            ></vue-recaptcha>
           </div>
           <v-flex xs12 sm10 d-flex style="margin-left: 20px">
             <v-row>
@@ -125,16 +139,30 @@
         </v-card-text>
       </v-card>
     </div>
-    
+    <v-card-text>
+      <v-fab-transition>
+        <v-btn
+          color="#1976d2"
+          dark
+          top
+          right
+          style=" position: fixed;bottom: 0px;right: 0px; "
+        >
+          Chú thích
+        </v-btn>
+      </v-fab-transition>
+    </v-card-text>
     <nodata v-show="nodataShow" :msg="msg"></nodata>
     <infinite-loading @infinite="infiniteHandler" ref="infiniteLoading">
       <span slot="no-more"></span>
     </infinite-loading>
     <popupcomment :showDialog="showPopupComment" @closePopup="closePopupEvent" :params="items" />
+    <mention :showDialog="showMention" @closePopup="closeMention"/>
   </v-container>
 </template>
 <script>
-import VueRecaptcha from 'vue-recaptcha';
+import mention from "../commons/mentions"
+import VueRecaptcha from "vue-recaptcha";
 import InfiniteLoading from "vue-infinite-loading";
 import { mapActions } from "vuex";
 import nodata from "../commons/noData";
@@ -145,9 +173,11 @@ export default {
     InfiniteLoading,
     nodata,
     popupcomment,
-    VueRecaptcha
+    VueRecaptcha,
+    mention
   },
   data: () => ({
+    showMention:false,
     showReCaptcha: true,
     msg: "Không Có Comments",
     showPopupComment: false,
@@ -181,9 +211,9 @@ export default {
     dataForReply: [],
     itemsReply: {},
     items: {},
-    robot:false,
-    dataForLikeAndDislike:{},
-    showCaptchaInearchRow: -1
+    robot: false,
+    dataForLikeAndDislike: {},
+    showCaptchaInearchRow: -1,
   }),
   watch: {},
   created() {
@@ -196,10 +226,13 @@ export default {
       "saveReplyCompany",
       "getCommentsLoadMore",
       "getReplyOfComment",
-      "updateLikeAndDislike"
+      "updateLikeAndDislike",
     ]),
     ...mapActions("home", ["getCompanyForSearch"]),
-    HomePage(){
+    closeMention(){
+      this.showMention = false
+    },
+    HomePage() {
       this.$router.push({ path: `/` });
     },
     async ShowReply(item, index) {
@@ -289,8 +322,11 @@ export default {
       this.showcomment = false;
     },
     async addreply() {
-      if(this.commentforReply.trim() == '' || this.commentforReply.trim() == null){
-        return
+      if (
+        this.commentforReply.trim() == "" ||
+        this.commentforReply.trim() == null
+      ) {
+        return;
       }
       const paramReply = {
         contents: this.commentforReply,
@@ -300,45 +336,45 @@ export default {
       this.commentforReply = "";
       this.ShowReply(this.itemsReply.item, this.itemsReply.index);
     },
-    likeComment(item, index){
-      this.showCaptchaInearchRow = index
-      this.dataForLikeAndDislike = item
-      this.dataForLikeAndDislike.flag = 1
-      this.dataForLikeAndDislike.index = index
-      
+    likeComment(item, index) {
+      this.showCaptchaInearchRow = index;
+      this.dataForLikeAndDislike = item;
+      this.dataForLikeAndDislike.flag = 1;
+      this.dataForLikeAndDislike.index = index;
     },
-    async dislikeComment(item, index){
-      this.showCaptchaInearchRow = index
-      this.dataForLikeAndDislike = item
-      this.dataForLikeAndDislike.flag = 0
-      this.dataForLikeAndDislike.index = index
+    async dislikeComment(item, index) {
+      this.showCaptchaInearchRow = index;
+      this.dataForLikeAndDislike = item;
+      this.dataForLikeAndDislike.flag = 0;
+      this.dataForLikeAndDislike.index = index;
     },
-    async onVerify (response) {
-      if (response)
-      {
-        if( typeof this.dataForLikeAndDislike.like == 'undefined'){
-          this.dataForLikeAndDislike.like = 0
+    async onVerify(response) {
+      if (response) {
+        if (typeof this.dataForLikeAndDislike.like == "undefined") {
+          this.dataForLikeAndDislike.like = 0;
         }
-        if( typeof this.dataForLikeAndDislike.dislike == 'undefined'){
-          this.dataForLikeAndDislike.dislike = 0
+        if (typeof this.dataForLikeAndDislike.dislike == "undefined") {
+          this.dataForLikeAndDislike.dislike = 0;
         }
         var params = {
-          _id:this.dataForLikeAndDislike._id,
+          _id: this.dataForLikeAndDislike._id,
           like: this.dataForLikeAndDislike.like,
           dislike: this.dataForLikeAndDislike.dislike,
-          flag: this.dataForLikeAndDislike.flag
-        }
-        var result = await this.updateLikeAndDislike(params)
-        if(result = 'success'){
-          if(this.dataForLikeAndDislike.flag == 0){
-            this.commentsList[this.dataForLikeAndDislike.index].dislike = this.dataForLikeAndDislike.dislike + 1 
-          }else{
-            this.commentsList[this.dataForLikeAndDislike.index].like = this.dataForLikeAndDislike.like + 1 
+          flag: this.dataForLikeAndDislike.flag,
+        };
+        var result = await this.updateLikeAndDislike(params);
+        if ((result = "success")) {
+          if (this.dataForLikeAndDislike.flag == 0) {
+            this.commentsList[this.dataForLikeAndDislike.index].dislike =
+              this.dataForLikeAndDislike.dislike + 1;
+          } else {
+            this.commentsList[this.dataForLikeAndDislike.index].like =
+              this.dataForLikeAndDislike.like + 1;
           }
         }
       }
-      this.showReCaptcha = false
-      this.showCaptchaInearchRow = -1
+      this.showReCaptcha = false;
+      this.showCaptchaInearchRow = -1;
     },
   },
 };

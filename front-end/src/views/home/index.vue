@@ -2,7 +2,7 @@
   <v-container>
     <div>
       <v-img :src="require('../../assets/rview.jpg')" class="background">
-        <v-text-field
+        <!-- <v-text-field
           style="margin-top:30px"
           class="mx-4 search"
           label="Tìm công ty"
@@ -10,12 +10,28 @@
           prepend-inner-icon="find_in_page"
           v-model="inputValueSearch"
           @keydown.enter="searchCompany"
-        ></v-text-field>
+        ></v-text-field> -->
       </v-img>
       <v-row justify="center">
         <v-col sm="10"></v-col>
       </v-row>
     </div>
+    <v-row no-gutters dense>
+      <v-col
+        md="6"
+        offset-md="3"
+        style="height:50px !important"
+      >
+          <v-text-field
+          class="mx-4"
+          label="Tìm công ty"
+          solo-inverted
+          prepend-inner-icon="find_in_page"
+          v-model="inputValueSearch"
+          @keydown.enter="searchCompany"
+        ></v-text-field>
+      </v-col>
+    </v-row>
     <v-row>
       <v-col cols="12" sm="9" xs="9">
         <v-card>
