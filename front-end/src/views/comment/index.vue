@@ -24,7 +24,7 @@
       </v-col>
     </v-row>
     <div v-for="(item,index) in commentsList" :key="index" style="padding-top:5px">
-      <v-card style="border-radius:0px" outlined>
+      <v-card style="border-radius:0px" outlined class="mx-auto">
         <v-card-text>
           <v-row no-gutters dense> 
             <v-card-subtitle class="text-md-left">
@@ -32,86 +32,16 @@
                 style="color:#1976d2 !important; margin-left: -15px; font-size:15px"
               >{{item.commentName}} ({{item.department}})</b>
             </v-card-subtitle>
-            <v-col cols="6">
-              <v-row no-gutters>
+            <v-col cols="6" >
+              <v-row>
                 <v-card-subtitle>Báo cáo ngày: {{item.createdAt}}</v-card-subtitle>
-                <v-card-subtitle v-if="item.evaluation == 1">
-                  <font-awesome-icon icon="star" size="lg" :style="{ color: 'yellow' }" />
-                  <font-awesome-icon
-                    :icon="['far', 'star']"
-                    size="lg"
-                    :style="{ color: 'yellow' }"
-                  />
-                  <font-awesome-icon
-                    :icon="['far', 'star']"
-                    size="lg"
-                    :style="{ color: 'yellow' }"
-                  />
-                  <font-awesome-icon
-                    :icon="['far', 'star']"
-                    size="lg"
-                    :style="{ color: 'yellow' }"
-                  />
-                  <font-awesome-icon
-                    :icon="['far', 'star']"
-                    size="lg"
-                    :style="{ color: 'yellow' }"
-                  />
-                </v-card-subtitle>
-                <v-card-subtitle
-                  v-else-if="item.evaluation == 2"
-                >
-                  <font-awesome-icon icon="star" size="lg" :style="{ color: 'yellow' }" />
-                  <font-awesome-icon icon="star" size="lg" :style="{ color: 'yellow' }" />
-                  <font-awesome-icon
-                    :icon="['far', 'star']"
-                    size="lg"
-                    :style="{ color: 'yellow' }"
-                  />
-                  <font-awesome-icon
-                    :icon="['far', 'star']"
-                    size="lg"
-                    :style="{ color: 'yellow' }"
-                  />
-                  <font-awesome-icon
-                    :icon="['far', 'star']"
-                    size="lg"
-                    :style="{ color: 'yellow' }"
-                  />
-                </v-card-subtitle>
-                <v-card-subtitle v-else-if="item.evaluation== 3">
-                  <font-awesome-icon icon="star" size="lg" :style="{ color: 'yellow' }" />
-                  <font-awesome-icon icon="star" size="lg" :style="{ color: 'yellow' }" />
-                  <font-awesome-icon icon="star" size="lg" :style="{ color: 'yellow' }" />
-                  <font-awesome-icon
-                    :icon="['far', 'star']"
-                    size="lg"
-                    :style="{ color: 'yellow' }"
-                  />
-                  <font-awesome-icon
-                    :icon="['far', 'star']"
-                    size="lg"
-                    :style="{ color: 'yellow' }"
-                  />
-                </v-card-subtitle>
-                <v-card-subtitle v-else-if="item.evaluation == 4">
-                  <font-awesome-icon icon="star" size="lg" :style="{ color: 'yellow' }" />
-                  <font-awesome-icon icon="star" size="lg" :style="{ color: 'yellow' }" />
-                  <font-awesome-icon icon="star" size="lg" :style="{ color: 'yellow' }" />
-                  <font-awesome-icon icon="star" size="lg" :style="{ color: 'yellow' }" />
-                  <font-awesome-icon
-                    :icon="['far', 'star']"
-                    size="lg"
-                    :style="{ color: 'yellow' }"
-                  />
-                </v-card-subtitle>
-                <v-card-subtitle v-else>
-                  <font-awesome-icon icon="star" size="lg" :style="{ color: 'yellow' }" />
-                  <font-awesome-icon icon="star" size="lg" :style="{ color: 'yellow' }" />
-                  <font-awesome-icon icon="star" size="lg" :style="{ color: 'yellow' }" />
-                  <font-awesome-icon icon="star" size="lg" :style="{ color: 'yellow' }" />
-                  <font-awesome-icon icon="star" size="lg" :style="{ color: 'yellow' }" />
-                </v-card-subtitle>
+                <v-rating 
+                  style="padding-top:12px"
+                  dense
+                  v-model="item.evaluation"
+                  background-color="orange lighten-3"
+                  color="orange"
+              ></v-rating>
               </v-row>
             </v-col>
           </v-row>
