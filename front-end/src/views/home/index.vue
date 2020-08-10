@@ -26,7 +26,7 @@
               <v-list-item :key="item.index" class="hoverCard">
                 <v-col cols="4" sm="2">
                 <v-avatar class="profile" color="grey" size="60" tile>
-                  <v-img :src="item.image"></v-img>
+                  <v-img :src="item.image" contain class="white darken-4"></v-img>
                 </v-avatar></v-col>
 
                 <!-- <v-col cols="6" sm="2">
