@@ -38,6 +38,7 @@
                 <v-rating 
                   style="padding-top:12px"
                   dense
+                  readonly
                   v-model="item.evaluation"
                   background-color="orange lighten-3"
                   color="orange"
