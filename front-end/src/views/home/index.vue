@@ -36,7 +36,7 @@
                 </v-col>-->
                 <v-row>
                   <v-list-item-content style="font-size:15px" @click="commentCompany(item)">
-                    <a class="text-md-left hovertext">{{item.companyNm}}</a>
+                    <a class="text-md-left hovertext"><b>{{item.companyNm}}</b></a>
                     <v-row>
                       <v-col class="text-md-left col-5">
                         <v-list-item-subtitle  style="font-size:13px" v-html="item.addressCd"></v-list-item-subtitle>

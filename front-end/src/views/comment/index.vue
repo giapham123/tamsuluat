@@ -4,14 +4,14 @@
       <router-link to="/">Trang chủ</router-link>
       / Review công ty {{companyNm}}
     </div>
-    <v-row>
+    <v-row class="headerCompany">
       <v-col cols="auto">
         <v-img height="100" width="100" :src="imageCompany"></v-img>
       </v-col>
       <v-col>
         <v-row class="flex-column ma-0 fill-height" justify="center">
           <v-card-title>
-            <b style="color:black; font-size:20px">{{companyNm}}</b>
+            <b style="color:#1976d2 !important; font-size:20px">{{companyNm}}</b>
           </v-card-title>
           <v-row style="margin-top:-20px; margin-left:1px">
             <v-card-subtitle>{{addressCompany}}</v-card-subtitle>
@@ -28,7 +28,7 @@
       <v-btn depressed small color="primary" @click="reviewCompany">Review</v-btn>
     </div>-->
 
-    <v-divider></v-divider>
+    <!-- <v-divider></v-divider> -->
     <!-- <v-card v-show="showReview">
       <v-col sm="6">
         <v-text-field v-show="showReview" label="Tên Nhân Viên" outlined dense v-model="staffNm"></v-text-field>
@@ -64,12 +64,12 @@
       </v-container>
     </v-card>-->
     <div v-for="(item,index) in commentsList" :key="index" style="padding-top:5px">
-      <v-card>
+      <v-card style="border-radius:0px" outlined>
         <v-card-text>
-          <v-row no-gutters>
+          <v-row no-gutters dense> 
             <v-card-subtitle class="text-md-left">
               <b
-                style="color:blue; margin-left: -15px; font-size:15px"
+                style="color:#1976d2 !important; margin-left: -15px; font-size:15px"
               >{{item.commentName}} ({{item.department}})</b>
             </v-card-subtitle>
             <v-col cols="6">
