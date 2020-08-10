@@ -188,13 +188,6 @@ export default {
     companyNm: "",
     addressCompany: "",
     sizeCompany: "",
-    // itemsDanhGia: [
-    //   "Max Sida",
-    //   "Hết thuốc chữa, Đang tính đường chuồn",
-    //   "Cũng tạm",
-    //   "Ngon",
-    //   "Công ty tuyệt vời",
-    // ],
     itemsMucluong: ["Lương Cao", "Tạm Ổn", "Qúa Bèo"],
     showReview: false,
     items: ["Foo", "Bar", "Fizz", "Buzz"],
@@ -302,6 +295,10 @@ export default {
       }
     },
     async closePopupEvent(params) {
+      if(params.close == 'close'){
+         this.showPopupComment = false;
+         return
+      }
       this.commentsList.unshift(params);
       this.showPopupComment = false;
     },

@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const CommentSchema = mongoose.Schema({
     contents: String,
-    evaluation: String,
+    evaluation: Number,
     salary: String,
     companyCd: String,
     commentName: String,

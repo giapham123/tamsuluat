@@ -31,7 +31,7 @@
         </v-card>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn small color="primary" @click="showDialog =false">Đóng</v-btn>
+          <v-btn small color="primary" @click="close">Đóng</v-btn>
           <v-btn small color="primary" @click="addReview">Đăng Comment</v-btn>
         </v-card-actions>
       </v-card>
@@ -45,7 +45,6 @@ export default {
   props: {
     showDialog: {
       type: Boolean,
-      required: true,
     },
     params:{
         type:Object
@@ -56,13 +55,6 @@ export default {
     evaluation: "",
     staffNm: null,
     department: null,
-    itemsDanhGia: [
-      "Max Sida",
-      "Hết thuốc chữa, Đang tính đường chuồn",
-      "Cũng tạm",
-      "Ngon",
-      "Công ty tuyệt vời",
-    ],
     itemsDanhGiaS: [
       {
         code:1,
@@ -108,6 +100,7 @@ export default {
         department: this.department,
         commentName: this.staffNm
       };
+      console.log(params);
       const resultSave = await this.saveComments(params);
       if (resultSave === "Save Success!") {
         this.contentForReview = "";
@@ -120,6 +113,12 @@ export default {
     closePopup(params) {
       this.$emit("closePopup", params);
     },
+    close(){
+      var params = {
+        close:'close'
+      }
+     this.closePopup(params)
+    }
   },
 };
 </script>
