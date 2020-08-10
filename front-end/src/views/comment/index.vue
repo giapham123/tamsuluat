@@ -1,7 +1,6 @@
 <template>
   <v-container class="container">
-    <div class="text-md-left">
-      <router-link to="/">Trang chủ</router-link>
+    <div class="text-md-left"><v-icon large  @click="HomePage">home</v-icon>
       / Review công ty {{companyNm}}
     </div>
     <v-row class="headerCompany">
@@ -268,6 +267,9 @@ export default {
       "updateLikeAndDislike"
     ]),
     ...mapActions("home", ["getCompanyForSearch"]),
+    HomePage(){
+      this.$router.push({ path: `/` });
+    },
     async ShowReply(item, index) {
       this.itemsReply = { item: item, index: index };
       this.showReplyComment = index;
