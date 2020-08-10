@@ -6,7 +6,7 @@
     </div>
     <v-row class="headerCompany">
       <v-col cols="auto">
-        <v-img height="100" width="100" :src="imageCompany"></v-img>
+        <v-img height="100" width="100" :src="imageCompany" contain></v-img>
       </v-col>
       <v-col>
         <v-row class="flex-column ma-0 fill-height" justify="center">
