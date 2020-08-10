@@ -170,7 +170,7 @@
               >Close</v-btn>
             </v-row>
           </v-flex>
-          <v-divider style="margin-top:5px"></v-divider>
+          <!-- <v-divider style="margin-top:5px"></v-divider> -->
           <div v-if="showReplyComment == index">
             <div v-for="itemreply in dataForReply" :key="itemreply._id" style="padding-left:20px">
               <v-card-text>
@@ -194,6 +194,7 @@
         </v-card-text>
       </v-card>
     </div>
+    
     <nodata v-show="nodataShow" :msg="msg"></nodata>
     <infinite-loading @infinite="infiniteHandler" ref="infiniteLoading">
       <span slot="no-more"></span>
