@@ -1,6 +1,6 @@
 <template>
   <v-container class="container">
-    <div class="text-md-left">
+    <div class="text-md-left" style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap">
       <v-icon large @click="HomePage">home</v-icon>
       / Review công ty {{companyNm}}
     </div>
