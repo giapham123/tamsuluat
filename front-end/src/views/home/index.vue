@@ -161,15 +161,18 @@ export default {
     async searchCompany() {
       this.overlay = true;
       this.showPaging = false;
-      this.itemsCompanyList = [];
+      
+      if(this.inputValueSearch.trim().length == 0) return;
       var resultCompany = await this.getCompanyForSearch({
         companyCd: this.inputValueSearch,
       });
+      
       if (resultCompany.length == 0) {
         this.nodataShow = true;
         this.nodataShowList = false;
         return;
       }
+      this.itemsCompanyList = [];
       for (let i = 0; i < resultCompany.length; i++) {
         // resultCompany[i]._source.image =
         //   "data:image/jpeg;base64," + resultCompany[i]._source.image;
