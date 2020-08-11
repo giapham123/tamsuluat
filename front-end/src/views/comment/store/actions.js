@@ -24,3 +24,8 @@ export const updateLikeAndDislike = async (dispatch, params) => {
   const updateLikeAndDislike = await client.post('updateLikeAndDislike', params)
   return updateLikeAndDislike.data
 }
+export const countTotalReviews = async (dispatch, params) => {
+  const countTotalReviews = await client.post('countTotalReviews', params)
+  return countTotalReviews.data
+}
+

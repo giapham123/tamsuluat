@@ -9,6 +9,6 @@ router.get('/getComments/:idCompany', commentController.getComments);
 router.get('/getComments/loadmore/:idCompany&paging=:page', commentController.getCommentsLoadMore);
 router.get('/getCommentsLatest', commentController.getCommentsLatest);
 router.post('/updateLikeAndDislike', commentController.updateLikeAndDislike);
-
+router.post('/countTotalReviews', commentController.countTotalReviews);
 
 module.exports = router;

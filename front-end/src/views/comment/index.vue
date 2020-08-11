@@ -141,7 +141,7 @@
     </div>
     <v-card-text>
       <v-fab-transition>
-        <v-btn
+        <!-- <v-btn
           color="#1976d2"
           dark
           top
@@ -150,6 +150,85 @@
         >
           Chú thích
         </v-btn>
+        -->
+        <v-col class="shrink">
+          <v-btn
+            class="ma-2"
+            color="#1976d2"
+            dark
+            top
+            right
+            style=" position: fixed;bottom: 0px;right: 0px; "
+            @click="expand = !expand"
+          >Tổng Đánh Giá</v-btn>
+
+          <v-expand-transition>
+            <v-card
+              v-show="expand"
+              height="300"
+              width="300"
+              top
+              right
+              style=" position: fixed;bottom: 50px;right: 10px; "
+            >
+              <v-list-item six-line>
+                <v-list-item-content>
+                  <v-list-item-title>Tổng Đánh Giá</v-list-item-title>
+                  <v-card-actions>
+                    <span class="text--lighten-2 caption mr-2">{{review1}} reviews</span>
+                    <v-rating
+                      dense
+                      v-model="rating1"
+                      background-color="orange lighten-3"
+                      color="orange"
+                      medium
+                    ></v-rating>
+                  </v-card-actions>
+                  <v-card-actions>
+                    <span class="text--lighten-2 caption mr-2">{{review2}} reviews</span>
+                    <v-rating
+                      dense
+                      v-model="rating2"
+                      background-color="orange lighten-3"
+                      color="orange"
+                      medium
+                    ></v-rating>
+                  </v-card-actions>
+                  <v-card-actions>
+                    <span class="text--lighten-2 caption mr-2">{{review3}} reviews</span>
+                    <v-rating
+                      dense
+                      v-model="rating3"
+                      background-color="orange lighten-3"
+                      color="orange"
+                      medium
+                    ></v-rating>
+                  </v-card-actions>
+                  <v-card-actions>
+                    <span class="text--lighten-2 caption mr-2">{{review4}} reviews</span>
+                    <v-rating
+                      dense
+                      v-model="rating4"
+                      background-color="orange lighten-3"
+                      color="orange"
+                      medium
+                    ></v-rating>
+                  </v-card-actions>
+                  <v-card-actions>
+                    <span class="text--lighten-2 caption mr-2">{{review5}} reviews</span>
+                    <v-rating
+                      dense
+                      v-model="rating5"
+                      background-color="orange lighten-3"
+                      color="orange"
+                      medium
+                    ></v-rating>
+                  </v-card-actions>
+                </v-list-item-content>
+              </v-list-item>
+            </v-card>
+          </v-expand-transition>
+        </v-col>
       </v-fab-transition>
     </v-card-text>
     <nodata v-show="nodataShow" :msg="msg"></nodata>
@@ -157,11 +236,11 @@
       <span slot="no-more"></span>
     </infinite-loading>
     <popupcomment :showDialog="showPopupComment" @closePopup="closePopupEvent" :params="items" />
-    <mention :showDialog="showMention" @closePopup="closeMention"/>
+    <mention :showDialog="showMention" @closePopup="closeMention" />
   </v-container>
 </template>
 <script>
-import mention from "../commons/mentions"
+import mention from "../commons/mentions";
 import VueRecaptcha from "vue-recaptcha";
 import InfiniteLoading from "vue-infinite-loading";
 import { mapActions } from "vuex";
@@ -174,10 +253,21 @@ export default {
     nodata,
     popupcomment,
     VueRecaptcha,
-    mention
+    mention,
   },
   data: () => ({
-    showMention:false,
+    rating1: 1,
+    rating2: 2,
+    rating3: 3,
+    rating4: 4,
+    rating5: 5,
+    review1:0,
+    review2:0,
+    review3:0,
+    review4:0,
+    review5:0,
+    expand: false,
+    showMention: false,
     showReCaptcha: true,
     msg: "Không Có Comments",
     showPopupComment: false,
@@ -211,6 +301,7 @@ export default {
   watch: {},
   created() {
     this.loadingCompany();
+    this.getRating();
   },
   methods: {
     ...mapActions("comments", [
@@ -220,13 +311,22 @@ export default {
       "getCommentsLoadMore",
       "getReplyOfComment",
       "updateLikeAndDislike",
+      "countTotalReviews"
     ]),
     ...mapActions("home", ["getCompanyForSearch"]),
-    closeMention(){
-      this.showMention = false
+    closeMention() {
+      this.showMention = false;
     },
     HomePage() {
       this.$router.push({ path: `/` });
+    },
+    async getRating(){
+      var result = await this.countTotalReviews({companyCd: this.$route.params.id})
+      this.review1 = result.onestar
+      this.review2 = result.twostar
+      this.review3 = result.threestar
+      this.review4 = result.fourstar
+      this.review5 = result.fivestar
     },
     async ShowReply(item, index) {
       this.itemsReply = { item: item, index: index };
@@ -295,9 +395,9 @@ export default {
       }
     },
     async closePopupEvent(params) {
-      if(params.close == 'close'){
-         this.showPopupComment = false;
-         return
+      if (params.close == "close") {
+        this.showPopupComment = false;
+        return;
       }
       this.commentsList.unshift(params);
       this.showPopupComment = false;

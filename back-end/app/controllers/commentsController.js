@@ -98,5 +98,26 @@ exports.updateLikeAndDislike = async (req, res) => {
         res.send('success');
     }
 }
+exports.countTotalReviews = async (req, res) => {
+    var result1 = await commentModel.find({"companyCd": req.body.companyCd,"evaluation":1});
+    var result2 = await commentModel.find({"companyCd": req.body.companyCd,"evaluation":2});
+    var result3 = await commentModel.find({"companyCd": req.body.companyCd,"evaluation":3});
+    var result4 = await commentModel.find({"companyCd": req.body.companyCd,"evaluation":4});
+    var result5 = await commentModel.find({"companyCd": req.body.companyCd,"evaluation":5});
+    var length1 = result1.length;
+    var length2 = result2.length;
+    var length3 = result3.length;
+    var length4 = result4.length;
+    var length5 = result5.length;
+    
+    var objRating = {
+        onestar:length1,
+        twostar:length2,
+        threestar:length3,
+        fourstar:length4,
+        fivestar:length5,
+    }
+    res.send(objRating)
+}
 function isNumber(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); } 
  

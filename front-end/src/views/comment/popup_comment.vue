@@ -58,19 +58,19 @@ export default {
     itemsDanhGiaS: [
       {
         code:1,
-        text:"Max Sida",
+        text:"1 Điểm - Max Sida",
       },{
         code:2,
-        text: "Hết thuốc chữa, Đang tính đường chuồn",
+        text: "2 Điểm - Hết thuốc chữa, Đang tính đường chuồn",
       },{
         code:3,
-        text: "Cũng tạm",
+        text: "3 Điểm - Cũng tạm",
       },{
         code:4,
-        text:"Ngon",
+        text:"4 Điểm - Ngon",
       },{
         code:5,
-        text: "Công ty tuyệt vời",
+        text: "5 Điểm - Công ty tuyệt vời",
       }
     ],
   }),
@@ -100,7 +100,6 @@ export default {
         department: this.department,
         commentName: this.staffNm
       };
-      console.log(params);
       const resultSave = await this.saveComments(params);
       if (resultSave === "Save Success!") {
         this.contentForReview = "";
