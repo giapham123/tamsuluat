@@ -4,7 +4,7 @@ const cors = require('cors')
 // const ES = require('../back-end/configES')
 // create express app
 const app = express();
-
+const createCollec = require('./createCollections')
 app.use(express.static('thumnail'));
 
 app.use(cors());
